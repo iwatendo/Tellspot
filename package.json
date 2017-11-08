@@ -1,0 +1,39 @@
+{
+  "name": "tellspot",
+  "license": "AGPL-3.0",
+  "scripts": {
+    "server": "http-server ./dist/ -p 8080 -c-1",
+    "setversion": "node dev/SetVersion.js",
+    "clean": "rimraf dist/*",
+    "webpack": "webpack --colors --config ./webpack.config.dev.js",
+    "webpack:release": "webpack --colors --config ./webpack.config.release.js",
+    "webpack:debug": "webpack --colors --config ./webpack.config.debug.js",
+    "copy:lib": "cpx \"./src/Page/Lib/*\" ./dist/lib",
+    "copy:image": "cpx \"./src/Page/Image/*\" ./dist/image",
+    "copy:src": "cpx \"./src/Page/**/{*.html,*.css,*.map,*.json}\" ./dist",
+    "build": "npm-run-all -s webpack copy:lib copy:image copy:src setversion",
+    "build:release": "npm-run-all -s clean webpack:release copy:lib copy:image copy:src setversion",
+    "build:debug": "npm-run-all -s webpack:debug copy:src"
+  },
+  "dependencies": {
+    "@types/react": "^15.0.34",
+    "@types/react-dom": "^15.5.1",
+    "co": "^4.6.0",
+    "cpx": "^1.5.0",
+    "gmaps": "^0.4.24",
+    "http-server": "^0.10.0",
+    "npm-run-all": "^4.0.2",
+    "peerjs": "^0.3.14",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "rimraf": "^2.6.1",
+    "ts-loader": "^2.2.2",
+    "typescript": "^2.4.2",
+    "webpack": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/jquery": "^2.0.48",
+    "@types/react": "^15.0.34",
+    "@types/react-dom": "^15.5.1"
+  }
+}
