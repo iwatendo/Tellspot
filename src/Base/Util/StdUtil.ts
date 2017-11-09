@@ -16,10 +16,8 @@ export default class StdUtil {
         //  対応ブラウザかチェック
         let ua = window.navigator.userAgent.toLowerCase();
 
-        if (isLiveCast) {
-            if (ua.indexOf('safari') >= 0) {
-                return true;
-            }
+        if (ua.indexOf('safari') >= 0) {
+            return true;
         }
 
         if (ua.indexOf('chrome') >= 0) {
