@@ -1,3 +1,4 @@
+import * as JQuery from "jquery";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import WebRTCService from "../../Base/Common/WebRTCService";
@@ -27,8 +28,14 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
 
         let linkUrl = LinkUtil.CreateLink("../CastInstance/", peerid);
 
-        let frame: HTMLFrameElement = document.getElementById('sbj-cast-instance-qrcode') as HTMLFrameElement;
-        frame.src = LinkUtil.CreateLink("../QrCode/") + "?linkurl=" + encodeURIComponent(linkUrl);
+        var qrcode: any = $('#qrcode');
+        qrcode.qrcode(linkUrl);
+        qrcode.ondblclick = (e) => {
+            //  デバック用に Ctrl + ダブルクリックで新規ウィンドウで開く
+            if (e.ctrlKey || e.altKey || e.shiftKey) {
+                window.open(linkUrl);
+            }
+        }        
 
         let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLInputElement;
         clipcopybtn.onclick = (e) => {

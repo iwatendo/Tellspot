@@ -6,7 +6,8 @@
     <meta charset='utf-8'>
     <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon.ico">
     <script src='/lib/skyway.min.js'></script>
-    <script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src='/lib/jquery-2.2.3.min.js'></script>
+    <script src='/lib/jquery.qrcode.min.js'></script>
     <script src="https://maps.google.com/maps/api/js?key={googlemap}"></script>
     <script src='/lib/gmaps.min.js'></script>
     <link rel='stylesheet' href='/lib/material.min.css' />
@@ -38,7 +39,10 @@
                         </div>
                     </div>
                     <div class="mdl-card__media mdl-cell mdl-cell--12-col-tablet">
-                        <iframe class="sbj-cast-instance-qrcode" id="sbj-cast-instance-qrcode"></iframe>
+                        <div id="qrbase">
+                            <div id="qrcode">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
@@ -51,9 +55,6 @@
         </main>
     </div>
 
-    <script src="/lib/material.min.js"></script>
-    <script src="/lib/react.min.js"></script>
-    <script src="/lib/react-dom.min.js"></script>
     <script src="bundle.js?v={version}"></script>
 
 </body>

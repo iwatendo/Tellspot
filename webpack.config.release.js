@@ -7,7 +7,6 @@ module.exports = {
     homeinstance: './src/Page/HomeInstance/Script.ts',
     castinstance: './src/Page/CastInstance/Script.ts',
     castvisitor: './src/Page/CastVisitor/Script.ts',
-    qrcode: './src/Page/QrCode/Script.ts',
   },
   output: {
     path: __dirname + '/dist',

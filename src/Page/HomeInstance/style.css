@@ -3,11 +3,19 @@
   margin: auto;
 }
 
-.sbj-cast-instance-qrcode{
-    width: 100%;
-    height: 272px;
-    background: whitesmoke;    
+#qrbase {
+  display: flex;
+  padding: 0px;
+  width: 100%;
+  height: 272px;
+  background: whitesmoke;    
 }
+
+#qrcode {
+  background-color: var(--sbj-color-qrcode-background);
+  margin: 0px auto;
+}
+
 
 .livecast{
   width: 100%;
