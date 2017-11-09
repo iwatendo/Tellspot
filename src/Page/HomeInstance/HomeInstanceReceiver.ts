@@ -2,8 +2,9 @@
 import AbstractServiceReceiver from "../../Base/Common/AbstractServiceReceiver";
 import WebRTCService from "../../Base/Common/WebRTCService";
 import * as HIContainer from "./HomeInstanceContainer";
-import HomeInstanceController from "./HomeInstanceController";
 
+import HomeInstanceController from "./HomeInstanceController";
+import CastInstanceSender from "../../Base/Container/CastInstanceSender";
 
 export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeInstanceController> {
 
@@ -12,20 +13,14 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
      */
     public Receive(conn: PeerJs.DataConnection, sender: Sender) {
 
-
         //  サーバントの起動/更新通知
-        if (sender.type === HIContainer.ServentSender.ID) {
-            this.Controller.InstanceManager.SetServent(sender as HIContainer.ServentSender);
+        if (sender.type === CastInstanceSender.ID) {
+            this.Controller.SetServentLocation(conn.peer, sender as CastInstanceSender, null);
         }
 
-        //  サーバントの終了通知
-        if (sender.type === HIContainer.ServentCloseSender.ID) {
-            this.Controller.InstanceManager.CloseServent(sender as HIContainer.ServentCloseSender);
-        }
-
-        //  強制終了処理
-        if (sender.type === HIContainer.ForcedTerminationSender.ID) {
-            WebRTCService.Close();
+        //  位置情報の通知
+        if (sender.type === HIContainer.MapLocationSender.ID) {
+            this.Controller.SetServentLocation(conn.peer, null, (sender as HIContainer.MapLocationSender).Location);
         }
 
     }

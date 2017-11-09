@@ -90,21 +90,21 @@ export default class SWPeer {
             if (xmlhttp.readyState == 4) {
                 if (xmlhttp.status == 200) {
                     try {
-                        let skyway = JSON.parse(xmlhttp.responseText);
-                        callback(skyway.apikey);
+                        let apikey = JSON.parse(xmlhttp.responseText);
+                        callback(apikey.skyway);
                         return;
                     }
                     catch (e) {
-                        let errMsg = "skyway.json\n" + e.toString();
+                        let errMsg = "apikey.json\n" + e.toString();
                         alert(errMsg);
                     }
                 }
                 else {
-                    alert("skyway.json not found.");
+                    alert("apikey.json not found.");
                 }
             }
         }
-        xmlhttp.open("GET", "/skyway.json", true);
+        xmlhttp.open("GET", "/apikey.json", true);
         xmlhttp.send();
     }
 

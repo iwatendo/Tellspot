@@ -9,7 +9,8 @@ import StreamUtil from "../../Base/Util/StreamUtil";
 import { DeviceView } from "../DeviceView/DeviceVew";
 import CastInstanceController from "./CastInstanceController";
 import LinkUtil from "../../Base/Util/LinkUtil";
-import { DialogMode } from "../../Base/Common/AbstractDialogController";
+import GMapsUtil, { MapPos } from "../../Base/Util/GMapsUtil";
+import { MapLocationSender } from "../HomeInstance/HomeInstanceContainer";
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
 
@@ -35,6 +36,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         startButton.onclick = (e) => {
             this.Controller.SetStreaming();
             this.ChangeDisplayMode(true);
+            this.ExecLocationSend();
         }
 
         //  ストリーミング停止ボタン
@@ -157,6 +159,28 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let disconnect = document.getElementById('sbj-cast-instance-disconnect');
         if (disconnect)
             disconnect.hidden = false;
+    }
+
+
+    /**
+     * 位置情報を1秒毎に送る。
+     */
+    public ExecLocationSend() {
+
+        let pre = new MapPos();
+
+        //  1秒毎に緯度経度を取得し、差異があれば送信
+        setInterval(()=>{
+            GMapsUtil.GetLocate((gpos) => {
+                if( pre.latitude !== gpos.latitude || pre.longitude !== gpos.longitude ){
+                    let sender = new MapLocationSender();
+                    sender.Location = gpos;
+                    WebRTCService.SendToOwner(sender);
+                    pre = gpos;
+                }
+            });
+        }
+        , 1000);
     }
 
 

@@ -3,7 +3,8 @@ import LinkUtil from "../../Base/Util/LinkUtil";
 import WebRTCService from "../../Base/Common/WebRTCService";
 import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
 
-import HomeInstanceController from "./HomeInstanceController";
+import HomeInstanceController, { ServentLocation } from "./HomeInstanceController";
+import GMapsUtil from "../../Base/Util/GMapsUtil";
 
 
 export default class HomeInstanceView extends AbstractServiceView<HomeInstanceController> {
@@ -24,13 +25,27 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
      */
     public SetCastInstanceUrl(peerid: string) {
 
-        let linkUrl = LinkUtil.CreateLink("../CastInstance/",peerid);
+        let linkUrl = LinkUtil.CreateLink("../CastInstance/", peerid);
 
         let element: HTMLInputElement = document.getElementById('sbj-cast-instance-url') as HTMLInputElement;
         element.textContent = linkUrl;
 
         let frame: HTMLFrameElement = document.getElementById('sbj-cast-instance-qrcode') as HTMLFrameElement;
         frame.src = LinkUtil.CreateLink("../QrCode/") + "?linkurl=" + encodeURIComponent(linkUrl);
+    }
+
+
+    /**
+     * 
+     * @param sl 
+     */
+    public NotifyServent(sl: ServentLocation) {
+
+        GMapsUtil.GetAddress(sl.Locate, (name) => {
+            GMapsUtil.CreateMap('#map', sl.Locate);
+            //  GMapsUtil.DrawOverlay(sl.Locate,'<div class="overlay">Test<div class="overlay_arrow above"></div></div>');
+        });
+
     }
 
 }

@@ -8,7 +8,19 @@ import * as HIContainer from "./HomeInstanceContainer";
 import HomeInstanceReceiver from "./HomeInstanceReceiver";
 import HomeInstanceView from "./HomeInstanceView";
 import HomeInstanceModel from "./HomeInstanceModel";
-import InstanceManager from "./InstanceManager";
+import { MapPos } from "../../Base/Util/GMapsUtil";
+import CastInstanceSender from "../../Base/Container/CastInstanceSender";
+
+
+/**
+ * 
+ */
+export class ServentLocation {
+    public Servent: CastInstanceSender;
+    public Locate: MapPos;
+    public IsNotify: boolean;
+}
+
 
 /**
  * 
@@ -18,7 +30,7 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
     public ControllerName(): string { return "HomeInstance"; }
 
     public PeerID: string;
-    public InstanceManager: InstanceManager;
+    private _serventMap = new Map<string, ServentLocation>();
 
 
     /**
@@ -34,11 +46,6 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
      * オーナー接続時イベント
      */
     public OnOwnerConnection() {
-
-        //  通常は呼ばれない。
-        //  多重起動が検出されたケースで呼ばれる為、終了通知を出す。
-        WebRTCService.SendToOwner(new HIContainer.ForcedTerminationSender());
-
     }
 
 
@@ -58,7 +65,6 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
 
         this.PeerID = peer.id;
 
-        this.InstanceManager = new InstanceManager(this);
         this.Model = new HomeInstanceModel(this, null);
         this.View = new HomeInstanceView(this, null);
         this.View.SetCastInstanceUrl(this.PeerID);
@@ -98,7 +104,37 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
      */
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
-        this.InstanceManager.CloseServentOwner(conn.peer);
+    }
+
+
+    /**
+     * 
+     * @param peerid 
+     * @param servent 
+     * @param pos 
+     */
+    public SetServentLocation(peerid: string, servent: CastInstanceSender, pos: MapPos) {
+
+        let sl: ServentLocation;
+
+        if (this._serventMap.has(peerid)) {
+            sl = this._serventMap.get(peerid);
+        }
+        else {
+            sl = new ServentLocation();
+            sl.IsNotify = false;
+            this._serventMap.set(peerid, sl);
+        }
+
+        if (servent) sl.Servent = servent;
+        if (pos) sl.Locate = pos;
+
+        if (sl.Servent && sl.Locate && !sl.IsNotify) {
+            //  サーバーント情報と位置情報の両方が揃ったら通知する
+            sl.IsNotify = true;
+            this.View.NotifyServent(sl);
+        }
+
     }
 
 };
