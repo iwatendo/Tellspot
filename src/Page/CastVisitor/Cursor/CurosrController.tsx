@@ -114,9 +114,11 @@ export class CursorController {
             this.CastCursorSend(this._video, itemDivElement, 0, 0, false);
         }
 
-        this._homePeerId = this._ownerPeerIdElement.textContent;
-        this._ownerPeerIdElement.onchange = (e) => {
+        if (this._ownerPeerIdElement) {
             this._homePeerId = this._ownerPeerIdElement.textContent;
+            this._ownerPeerIdElement.onchange = (e) => {
+                this._homePeerId = this._ownerPeerIdElement.textContent;
+            }
         }
     }
 
@@ -237,14 +239,14 @@ export class CursorController {
         if (sender && sender.isDisp) {
 
             //  発言アクターに変更があった場合、表示を差替える
-            if( sender.aid !== aid || sender.iid !== iid){
+            if (sender.aid !== aid || sender.iid !== iid) {
                 sender.aid = aid;
                 sender.iid = iid;
                 this.SendCursorToOwner(sender);
             }
         }
     }
-    
+
 
     /**
      * マウスカーソルの表示処理
@@ -488,8 +490,8 @@ export class CursorController {
                     element.onmouseup = (e) => clearOffsset();
 
                     //  イメージ画像として掴んでしまい、うまく動かせないケースの対策
-                    element.onselectstart = (e) =>{ return false; }
-                    element.onmousemove = (e)=>{ return false; }
+                    element.onselectstart = (e) => { return false; }
+                    element.onmousemove = (e) => { return false; }
                 }
             }
         }

@@ -42,7 +42,9 @@ export default class GMapsUtil {
         this._map.drawOverlay({
             lat: pos.latitude,
             lng: pos.longitude,
-            content: content
+            content: content,
+            verticalAlign: 'top',
+            horizontalAlign: 'center'
         });
     }
 

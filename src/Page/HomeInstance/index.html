@@ -2,30 +2,56 @@
 <html lang="ja-jp">
 
 <head>
-    <title>Tellspot</title>
+    <title>Tellspot ～現場から中継お願いします！～</title>
     <meta charset='utf-8'>
     <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon.ico">
     <script src='/lib/skyway.min.js'></script>
     <script src="http://code.jquery.com/jquery-2.2.4.min.js"></script>
     <script src="https://maps.google.com/maps/api/js?key={googlemap}"></script>
     <script src='/lib/gmaps.min.js'></script>
-    <link rel='stylesheet' type='text/css' href='/lib/material.min.css' />
+    <link rel='stylesheet' href='/lib/material.min.css' />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel='stylesheet' type='text/css' href='../common.css?v={version}' />
-    <link rel='stylesheet' type='text/css' href='style.css?v={version}' />
-    <script src="/lib/material.min.js"></script>
+    <link rel='stylesheet' href='../common.css?v={version}' />
+    <link rel='stylesheet' href='style.css?v={version}' />
 </head>
 
 <body>
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header" id="sbj-home-instance">
-        <main id="sbj-home-instance-main">
-            <h4>Tellspot</h4>
-            <iframe class="sbj-cast-instance-qrcode" id="sbj-cast-instance-qrcode"></iframe>
-            <h5 id="sbj-cast-instance-url"></h5>
-            <div class="map" id="map"></div>
+    <div class="mdl-layout mdl-js-layout">
+        <main class="mdl-layout__content">
+            <div class="mdl-grid sbj-max-width">
+                <div class="mdl-grid mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
+                    <div class="mdl-cell mdl-cell--8-col">
+                        <h2 class="mdl-card__title-text">Tellspot ～現場から中継お願いします！～</h2>
+                        <div class="mdl-card__supporting-text padding-top">
+                            <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+                                &nbsp; 接続URLをクリップボードにコピー &nbsp;
+                            </button>
+                        </div>
+                        <div class="mdl-card__supporting-text no-left-padding">
+                            接続URL（またはQRコード）にアクセスする事で、スマホ（タブレット）から現場中継ができるサービスです。
+                            ユーザー登録やアプリ不用で利用できます。<br/>
+                            <br/>
+                            ・接続URLは毎回変更されます。<br/>
+                            ・iOS11 / Android7.1.1 以降の端末に対応しています。<br/>
+                            <br/>
+                            NTT Communicationsの<a href="https://webrtc.ecl.ntt.com/" target="_blank">SkyWay</a>を利用したサービスです。<br/>
+                        </div>
+                    </div>
+                    <div class="mdl-card__media mdl-cell mdl-cell--12-col-tablet">
+                        <iframe class="sbj-cast-instance-qrcode" id="sbj-cast-instance-qrcode"></iframe>
+                    </div>
+                </div>
+                <div class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
+                    <div class="map" id="map"></div>
+                </div>
+                <div class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
+                    <iframe class="livecast" id="livecast"></iframe>
+                </div>
+            </div>
         </main>
     </div>
 
+    <script src="/lib/material.min.js"></script>
     <script src="/lib/react.min.js"></script>
     <script src="/lib/react-dom.min.js"></script>
     <script src="bundle.js?v={version}"></script>

@@ -27,11 +27,19 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
 
         let linkUrl = LinkUtil.CreateLink("../CastInstance/", peerid);
 
-        let element: HTMLInputElement = document.getElementById('sbj-cast-instance-url') as HTMLInputElement;
-        element.textContent = linkUrl;
-
         let frame: HTMLFrameElement = document.getElementById('sbj-cast-instance-qrcode') as HTMLFrameElement;
         frame.src = LinkUtil.CreateLink("../QrCode/") + "?linkurl=" + encodeURIComponent(linkUrl);
+
+        let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLInputElement;
+        clipcopybtn.onclick = (e) => {
+            clipcopybtn.textContent = " 接続URLをクリップボードにコピーしました ";
+            StdUtil.ClipBoardCopy(linkUrl);
+            clipcopybtn.disabled = true;
+            window.setTimeout(()=>{
+                clipcopybtn.textContent = " 接続URLをクリップボードにコピー ";
+                clipcopybtn.disabled = false;
+            },2000);
+        };
     }
 
 
@@ -43,7 +51,9 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
 
         GMapsUtil.GetAddress(sl.Locate, (name) => {
             GMapsUtil.CreateMap('#map', sl.Locate);
-            //  GMapsUtil.DrawOverlay(sl.Locate,'<div class="overlay">Test<div class="overlay_arrow above"></div></div>');
+            GMapsUtil.DrawOverlay(sl.Locate,'<div class="overlay">中継現場<div class="overlay_arrow above"></div></div>');
+            let frame = document.getElementById('livecast') as HTMLIFrameElement;
+            frame.src = sl.Servent.clientUrl;
         });
 
     }

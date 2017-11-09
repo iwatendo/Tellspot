@@ -1,10 +1,10 @@
 
 #qrbase {
     display: flex;
-    padding: 12px;
+    padding: 0px;
 }
 
 #qrcode {
     background-color: var(--sbj-color-qrcode-background);
-    margin: 20px auto;
+    margin: 0px auto;
 }

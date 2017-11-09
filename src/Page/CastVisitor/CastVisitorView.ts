@@ -99,8 +99,8 @@ export class CastVisitorView extends AbstractServiceView<CastVisitorController> 
             this.Cursor.SetLastChatActor(aid, iid);
         }
 
-        lastChatAidElement.onclick = chnageLastChatActor;
-        lastChatIidElement.onclick = chnageLastChatActor;
+        if (lastChatAidElement) lastChatAidElement.onclick = chnageLastChatActor;
+        if (lastChatIidElement) lastChatIidElement.onclick = chnageLastChatActor;
     }
 
 }
