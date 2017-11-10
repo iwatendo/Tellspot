@@ -76,7 +76,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     public OnOwnerClose() {
         //  全てのクライアントとの接続を終了します
         WebRTCService.Close();
-        let msg = "接続先のクライアントが閉じられました。\nまたは、ネットワークが切断されました。\n";
+        let msg = "接続先のブラウザが閉じられました。\nまたはネットワークが切断されました。\n";
         this.View.SetError(msg);
     }
 

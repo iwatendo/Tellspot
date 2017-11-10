@@ -37,10 +37,8 @@ export default class DeviceComponent extends React.Component<DeviceProp, any> {
             return (<DeviceItemComponent key={name} owner={this.props.owner} deviceId={device.deviceId} deviceName={name} />);
         });
 
-        //  コンボボックスの初期化（先頭には空白行を入れる）
         return (
             <div>
-                <DeviceItemComponent key={""} owner={this.props.owner} deviceId={""} deviceName={""} />
                 {deviceTable}
             </div>
         );

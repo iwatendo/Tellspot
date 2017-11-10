@@ -15,59 +15,55 @@
 
 <body>
 
-    <div class="sbj-cast-instance" id="sbj-cast-instance">
+    <div class="mdl-layout mdl-js-layout">
+        <main id="sbj-cast-instance-main" class="mdl-layout__content">
 
-        <div class="sbj-cast-instance-layout mdl-layout mdl-js-layout mdl-color--grey-100 mdl-layout--fixed-header mdl-shadow--4dp">
+            <video id='video' autoplay="true" playsinline="true"></video>
 
-            <main id="sbj-cast-instance-main" class="mdl-layout__content">
-
-                <video id='video' autoplay="true" playsinline="true"></video>
-
-                <div id="sbj-cast-instance-mobile-menu">
-                    <div class="sbj-cast-instance-mobile-cell mdl-cell mdl-cell--6-col mdl-color-text--grey-600">
-                        <div>
-                            <button id="sbj-cast-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>
-                                <i class="material-icons">play_arrow</i>
-                                &nbsp;開始&nbsp;
-                            </button>
-                            <button id="sbj-cast-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
-                                <i class="material-icons">stop</i>
-                                &nbsp;停止&nbsp;
-                            </button>
-                        </div>
-                        <div>                            
-                            <!-- Mic -->
-                            <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="mic-select-div">
-                                <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="mic-select" />
-                                <label class="mdl-textfield__label" for="mic-select" maxlength='40'>マイク</label>
-                                <ul id="mic-list" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="mic-select">
-                                    <li class="mdl-menu__item"></li>
-                                </ul>
-                            </div>
-                            <span class="sbj-cast-instance-device-tooltip mdl-tooltip" hidden for="mic-select-div">ライブキャスト中は<br/>マイクの変更はできません</span>
-                        </div>
-                        <div>
-                            <!-- Camera -->
-                            <div class="sbj-cast-instance-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="webcam-select-div">
-                                <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="webcam-select" />
-                                <label class="mdl-textfield__label" for="webcam-select" maxlength='32'>カメラ</label>
-                                <ul id="webcam-list" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="webcam-select">
-                                    <li class="mdl-menu__item" onclick=""></li>
-                                </ul>
-                            </div>
-                        </div>
+            <div class="mdl-cell mdl-cell--12-col">
+                <div class='device'>
+                    <!-- Camera -->
+                    <div class="sbj-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="webcam-select-div">
+                        <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="webcam-select" />
+                        <label class="mdl-textfield__label" for="webcam-select" maxlength='32'>カメラ</label>
+                        <ul id="webcam-list" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="webcam-select">
+                            <li class="mdl-menu__item" onclick=""></li>
+                        </ul>
                     </div>
                 </div>
-            </main>
-
-            <main id="sbj-cast-instance-disconnect" class="sbj-cast-instance-disconnect mdl-color-text--grey-600" hidden>
-                <div class="mdl-card__supporting-text">
-                    <h4 id="error-message">
-                    </h4>
+                <div class='device'>
+                    <!-- Mic -->
+                    <div class="sbj-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="mic-select-div">
+                        <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="mic-select" />
+                        <label class="mdl-textfield__label" for="mic-select" maxlength='40'>マイク</label>
+                        <ul id="mic-list" class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="mic-select">
+                            <li class="mdl-menu__item"></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
-        </div>
+            <button id="sbj-cast-instance-start" class="sbj-cast-instance-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+                disabled>
+                <i class="material-icons">videocam</i>
+                &nbsp;現場からの中継を開始します&nbsp;
+            </button>
+
+            <button id="sbj-cast-instance-stop" class="sbj-cast-instance-button mdl-button mdl-js-button mdl-button--raised mdl-button--accent"
+                hidden>
+                <i class="material-icons">videocam_off</i>
+                &nbsp;以上、現場からの中継でした&nbsp;
+            </button>
+
+        </main>
+
+        <main id="sbj-cast-instance-disconnect" class="sbj-cast-instance-disconnect mdl-color-text--grey-600" hidden>
+            <div class="mdl-card__supporting-text">
+                <h4 id="error-message">
+                </h4>
+            </div>
+        </main>
+
     </div>
 
     <script src="/lib/material.min.js"></script>
