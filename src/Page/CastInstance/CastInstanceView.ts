@@ -150,19 +150,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
 
     /**
-     * 
-     * @param hidden 
-     */
-    public SetControllHidden() {
-        document.getElementById('sbj-cast-instance-main').hidden = true;
-
-        let disconnect = document.getElementById('sbj-cast-instance-disconnect');
-        if (disconnect)
-            disconnect.hidden = false;
-    }
-
-
-    /**
      * 位置情報を1秒毎に送る。
      */
     public ExecLocationSend() {
@@ -170,17 +157,35 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let pre = new MapPos();
 
         //  1秒毎に緯度経度を取得し、差異があれば送信
-        setInterval(()=>{
+        setInterval(() => {
             GMapsUtil.GetLocate((gpos) => {
-                if( pre.latitude !== gpos.latitude || pre.longitude !== gpos.longitude ){
+                if (pre.latitude !== gpos.latitude || pre.longitude !== gpos.longitude) {
                     let sender = new MapLocationSender();
                     sender.Location = gpos;
                     WebRTCService.SendToOwner(sender);
                     pre = gpos;
                 }
             });
+        }, 1000);
+    }
+
+
+    /**
+     * エラーメッセージを表示します
+     * @param message 
+     */
+    public SetError(message: string) {
+
+        document.getElementById('sbj-cast-instance-main').hidden = true;
+
+        let disconnect = document.getElementById('sbj-cast-instance-disconnect');
+
+        if (disconnect) {
+            disconnect.hidden = false;
+            let errorEelement = document.getElementById('error-message');
+            errorEelement.innerText = message;
         }
-        , 1000);
+
     }
 
 

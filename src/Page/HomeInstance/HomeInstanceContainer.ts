@@ -14,3 +14,16 @@ export class MapLocationSender extends Sender {
     public Location: MapPos;
 
 }
+
+
+export class ConnectionErrorSender extends Sender {
+    public static ID = "ConnectionError";
+
+    constructor(msg: string) {
+        super(ConnectionErrorSender.ID);
+        this.Message = msg;
+    }
+
+    public Message: string;
+
+}

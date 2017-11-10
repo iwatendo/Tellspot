@@ -5,8 +5,10 @@ import * as HIContainer from "./HomeInstanceContainer";
 
 import HomeInstanceController from "./HomeInstanceController";
 import CastInstanceSender from "../../Base/Container/CastInstanceSender";
+import { MapPos } from "../../Base/Util/GMapsUtil";
 
 export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeInstanceController> {
+
 
     /**
      * 
@@ -15,14 +17,31 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
 
         //  サーバントの起動/更新通知
         if (sender.type === CastInstanceSender.ID) {
-            this.Controller.SetServentLocation(conn.peer, sender as CastInstanceSender, null);
+            this.SetServentLocation(conn, sender as CastInstanceSender, null);
         }
 
         //  位置情報の通知
         if (sender.type === HIContainer.MapLocationSender.ID) {
-            this.Controller.SetServentLocation(conn.peer, null, (sender as HIContainer.MapLocationSender).Location);
+            this.SetServentLocation(conn, null, (sender as HIContainer.MapLocationSender).Location);
         }
 
+    }
+
+
+    /**
+     * 
+     * @param peerid 
+     * @param servent 
+     * @param pos 
+     */
+    public SetServentLocation(conn: PeerJs.DataConnection, servent: CastInstanceSender, pos: MapPos) {
+
+        let result = this.Controller.SetServentLocation(conn.peer, servent, pos);
+
+        if (!result) {
+            let sender = new HIContainer.ConnectionErrorSender("他のユーザーが接続している為、接続できません。");
+            WebRTCService.SendTo(conn, sender);
+        }
     }
 
 }

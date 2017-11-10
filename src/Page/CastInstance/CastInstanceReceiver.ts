@@ -9,6 +9,7 @@ import IconCursorSender from "../../Base/Container/IconCursorSender";
 import CastInstanceController from "./CastInstanceController";
 import { GetCastSettingSedner } from "./CastInstanceContainer";
 import CastInstanceView from "./CastInstanceView";
+import { ConnectionErrorSender } from "../HomeInstance/HomeInstanceContainer";
 
 
 export class CastInstanceReceiver extends AbstractServiceReceiver<CastInstanceController> {
@@ -24,6 +25,12 @@ export class CastInstanceReceiver extends AbstractServiceReceiver<CastInstanceCo
             let cursor = sender as IconCursorSender;
             this.Controller.CursorCache.Set(cursor);
             WebRTCService.SendAll(sender);
+        }
+
+        //  エラー表示
+        if (sender.type === ConnectionErrorSender.ID) {
+            let error = sender as ConnectionErrorSender;
+            this.Controller.View.SetError(error.Message);
         }
 
     }

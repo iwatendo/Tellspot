@@ -104,6 +104,13 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
      */
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
+
+        let pid = conn.peer;
+
+        if (this._serventMap.has(pid)) {
+            this._serventMap.delete(pid);
+            this.View.NotifyCloseServent();
+        }
     }
 
 
@@ -113,28 +120,46 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
      * @param servent 
      * @param pos 
      */
-    public SetServentLocation(peerid: string, servent: CastInstanceSender, pos: MapPos) {
+    public SetServentLocation(peerid: string, servent: CastInstanceSender, pos: MapPos): boolean {
 
-        let sl: ServentLocation;
+        let sl = this.CheckGetServentLocation(peerid);
 
-        if (this._serventMap.has(peerid)) {
-            sl = this._serventMap.get(peerid);
+        if (sl) {
+            if (servent) sl.Servent = servent;
+            if (pos) sl.Locate = pos;
+
+            if (sl.Servent && sl.Locate && !sl.IsNotify) {
+                //  サーバーント情報と位置情報の両方が揃ったら通知する
+                sl.IsNotify = true;
+                this.View.NotifyServent(sl);
+            }
+            return true;
         }
         else {
-            sl = new ServentLocation();
-            sl.IsNotify = false;
-            this._serventMap.set(peerid, sl);
+            return false;
         }
 
-        if (servent) sl.Servent = servent;
-        if (pos) sl.Locate = pos;
+    }
 
-        if (sl.Servent && sl.Locate && !sl.IsNotify) {
-            //  サーバーント情報と位置情報の両方が揃ったら通知する
-            sl.IsNotify = true;
-            this.View.NotifyServent(sl);
+
+    /**
+     * 
+     * @param peerid 
+     */
+    private CheckGetServentLocation(peerid: string): ServentLocation {
+        if (this._serventMap.has(peerid)) {
+            return this._serventMap.get(peerid);
         }
-
+        else if (this._serventMap.size > 0) {
+            //  他の人が接続済みの場合はエラーとする
+            return null;
+        }
+        else {
+            let result = new ServentLocation();
+            result.IsNotify = false;
+            this._serventMap.set(peerid, result);
+            return result;
+        }
     }
 
 };
