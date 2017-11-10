@@ -6,7 +6,7 @@ import DeviceUtil, { DeviceKind } from "../../Base/Util/DeviceUtil";
 import DeviceComponent from "./DeviceComponent";
 
 
-export interface OnChangeDevice { (deviceId: string, deviceName: string): void };
+export interface OnChangeDevice { (deviceId: string): void };
 
 
 export class DeviceView {
@@ -58,7 +58,7 @@ export class DeviceView {
         this._selectDeviceId = deviceId;
         this._textElement.value = deviceName;
         if (this._onChangeDevice) {
-            this._onChangeDevice(deviceId, deviceName);
+            this._onChangeDevice(deviceId);
         }
     }
 
@@ -70,17 +70,28 @@ export class DeviceView {
         this._selectDeviceId = "";
         this._textElement.value = "";
         if (this._onChangeDevice) {
-            this._onChangeDevice("", "");
+            this._onChangeDevice("");
         }
     }
 
 
     /**
-     * 先頭のデバイスを選択状態にする
+     * デフォルトデバイスの選択
      */
-    public SelectFirstDevice() {
+    public SelectDefaultDevice() {
         if (this._devices && this._devices.length > 0) {
-            this.SelectDeivce(this._devices[0].label);
+
+            for(let i = 0 ; i < this._devices.length ; i ++){
+                let name = this._devices[i].label as string;
+
+                //  背面カメラを検出できる場合は背面カメラをデフォルトにする
+                if( name.indexOf("back") >= 0){
+                    this.SelectDeivce(this._devices[i].deviceId);
+                    return;
+                }
+            }
+
+            this.SelectDeivce(this._devices[0].deviceId);
         }
     }
 
@@ -94,7 +105,7 @@ export class DeviceView {
         let name = DeviceUtil.GetDeviceName(this._deviceKind, id);
         this._textElement.value = name;
         if (this._onChangeDevice) {
-            this._onChangeDevice(id, name);
+            this._onChangeDevice(id);
         }
     }
 }

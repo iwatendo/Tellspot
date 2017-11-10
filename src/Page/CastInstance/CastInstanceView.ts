@@ -14,10 +14,6 @@ import { MapLocationSender } from "../HomeInstance/HomeInstanceContainer";
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
 
-    private _micDeviceView: DeviceView;
-    private _camDeviceView: DeviceView;
-
-
     /**
      * 初期化処理
      */
@@ -80,73 +76,42 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
         let controller = this.Controller;
 
-        let preMic = LocalCache.LiveCastOptions.SelectMic;
-        let preCam = LocalCache.LiveCastOptions.SelectCam;
-        let isInit = (!preMic && !preCam);
+        let previewElement = document.getElementById('video') as HTMLVideoElement;
+        let camSelectElement = document.getElementById('webcam-select') as HTMLInputElement;
+        var camListElement = document.getElementById('webcam-list') as HTMLElement;
+        let micSelectElement = document.getElementById('mic-select') as HTMLInputElement;
+        var micListElement = document.getElementById('mic-list') as HTMLElement;
 
         DeviceUtil.GetAudioDevice((devices) => {
 
-            let textElement = document.getElementById('mic-select') as HTMLInputElement;
-            var listElement = document.getElementById('mic-list') as HTMLElement;
+            var view = new DeviceView(DeviceKind.Audio, micSelectElement, micListElement, devices,
+                (deviceId) => {
+                    controller.AudioSource = deviceId;
+                }
+            );
 
-            var view = new DeviceView(DeviceKind.Audio, textElement, listElement, devices, (deviceId, deviceName) => {
-                controller.AudioSource = deviceId;
-                LocalCache.SetLiveCastOptions((opt) => opt.SelectMic = deviceId);
-                this.ChnageDevice();
-            });
-
-            if (isInit) {
-                view.SelectFirstDevice();
-            } else {
-                view.SelectDeivce(preMic);
-            }
-
-            this._micDeviceView = view;
+            view.SelectDefaultDevice();
             document.getElementById("mic-select-div").classList.add("is-dirty");
-            this.ChnageDevice();
         });
 
         DeviceUtil.GetVideoDevice((devices) => {
 
-            let previewElement = document.getElementById('video') as HTMLVideoElement;
-            let textElement = document.getElementById('webcam-select') as HTMLInputElement;
-            var listElement = document.getElementById('webcam-list') as HTMLElement;
-
-            var view = new DeviceView(DeviceKind.Video, textElement, listElement, devices, (deviceId, deviceName) => {
-
-                controller.VideoSource = deviceId;
-                LocalCache.SetLiveCastOptions((opt) => opt.SelectCam = deviceId);
-                this.ChnageDevice();
-
-                if (deviceId) {
-                    //  StreamUtil.SetPreview(previewElement, deviceId);
+            var view = new DeviceView(DeviceKind.Video, camSelectElement, camListElement, devices,
+                (deviceId) => {
+                    controller.VideoSource = deviceId;
+                    if (deviceId) {
+                        //  StreamUtil.SetPreview(previewElement, deviceId);
+                    }
+                    else {
+                        //  StreamUtil.StopPreview(previewElement);
+                    }
                 }
-                else {
-                    //  StreamUtil.StopPreview(previewElement);
-                }
-            });
+            );
 
-            if (isInit) {
-                view.SelectFirstDevice();
-            } else {
-                view.SelectDeivce(preCam);
-            }
-
-            this._camDeviceView = view;
+            view.SelectDefaultDevice();
             document.getElementById("webcam-select-div").classList.add("is-dirty");
-            this.ChnageDevice();
         });
 
-    }
-
-
-    /**
-     * デバイス変更時の共通処理
-     */
-    public ChnageDevice() {
-        let startButton = document.getElementById('sbj-cast-instance-start') as HTMLButtonElement;
-        let options = LocalCache.LiveCastOptions;
-        startButton.disabled = !((options.SelectCam ? true : false) || (options.SelectMic ? true : false));
     }
 
 
