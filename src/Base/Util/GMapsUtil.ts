@@ -28,7 +28,7 @@ export default class GMapsUtil {
             div: elementId,
             lat: pos.latitude,
             lng: pos.longitude,
-            zoom: 16
+            zoom: 17
         })
     }
 
