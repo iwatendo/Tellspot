@@ -36,13 +36,14 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         startButton.onclick = (e) => {
             this.Controller.SetStreaming();
             this.ChangeDisplayMode(true);
-            this.ExecLocationSend();
+            this.LocationPolling();
         }
 
         //  ストリーミング停止ボタン
         stopButton.onclick = (e) => {
             this.Controller.ServerSend(false, false);
             this.ChangeDisplayMode(false);
+            location.reload();
         };
 
         this.SetMediaDevice();
@@ -118,10 +119,10 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
                 this.ChnageDevice();
 
                 if (deviceId) {
-                    StreamUtil.SetPreview(previewElement, deviceId);
+                    //  StreamUtil.SetPreview(previewElement, deviceId);
                 }
                 else {
-                    StreamUtil.StopPreview(previewElement);
+                    //  StreamUtil.StopPreview(previewElement);
                 }
             });
 
@@ -152,7 +153,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
     /**
      * 位置情報を1秒毎に送る。
      */
-    public ExecLocationSend() {
+    public LocationPolling() {
 
         let pre = new MapPos();
 

@@ -16,14 +16,14 @@ export interface OnGetAddress { (address: string): void }
 export default class GMapsUtil {
 
 
-    private static _map : any;
+    private static _map: any;
 
     /**
      * 地図を生成します
      * @param div 
      * @param pos 
      */
-    public static CreateMap(elementId:string , pos : MapPos){
+    public static CreateMap(elementId: string, pos: MapPos) {
         this._map = new GMaps({
             div: elementId,
             lat: pos.latitude,
@@ -32,20 +32,33 @@ export default class GMapsUtil {
         })
     }
 
+    private static _overlay: any = null;
 
     /**
      * 
      * @param pos 
      * @param content 
      */
-    public static DrawOverlay(pos: MapPos, content: string){
-        this._map.drawOverlay({
+    public static DrawOverlay(pos: MapPos, content: string) {
+
+        if (this._overlay) {
+            //  前回表示分は削除する
+            this._overlay.setMap(null);
+        }
+
+        this._overlay = this._map.drawOverlay({
             lat: pos.latitude,
             lng: pos.longitude,
             content: content,
             verticalAlign: 'top',
             horizontalAlign: 'center'
         });
+
+        this._map.setCenter({
+            lat: pos.latitude,
+            lng: pos.longitude
+        });
+
     }
 
 

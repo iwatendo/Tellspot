@@ -128,10 +128,16 @@ export default class HomeInstanceController extends AbstractServiceController<Ho
             if (servent) sl.Servent = servent;
             if (pos) sl.Locate = pos;
 
-            if (sl.Servent && sl.Locate && !sl.IsNotify) {
-                //  サーバーント情報と位置情報の両方が揃ったら通知する
-                sl.IsNotify = true;
-                this.View.NotifyServent(sl);
+            if (sl.Servent && sl.Locate) {
+
+                if(sl.IsNotify){
+                    this.View.SetLocation(sl.Locate);
+                }
+                else{
+                    //  サーバーント情報と位置情報の両方が揃ったら初回の起動通知をする
+                    sl.IsNotify = true;
+                    this.View.NotifyServent(sl);
+                }
             }
             return true;
         }

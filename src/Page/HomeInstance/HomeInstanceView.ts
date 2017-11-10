@@ -5,7 +5,7 @@ import WebRTCService from "../../Base/Common/WebRTCService";
 import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
 
 import HomeInstanceController, { ServentLocation } from "./HomeInstanceController";
-import GMapsUtil from "../../Base/Util/GMapsUtil";
+import GMapsUtil, { MapPos } from "../../Base/Util/GMapsUtil";
 
 
 export default class HomeInstanceView extends AbstractServiceView<HomeInstanceController> {
@@ -52,13 +52,21 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
 
         GMapsUtil.GetAddress(sl.Locate, (name) => {
             GMapsUtil.CreateMap('#map', sl.Locate);
-            GMapsUtil.DrawOverlay(sl.Locate, '<div class="overlay">中継現場<div class="overlay_arrow above"></div></div>');
             let cell = document.getElementById('livecast-cell') as HTMLFrameElement;
             let frame = document.getElementById('livecast') as HTMLIFrameElement;
             cell.hidden = false;
             frame.src = sl.Servent.clientUrl;
+            this.SetLocation(sl.Locate);
         });
+    }
 
+
+    /**
+     * 
+     * @param locate 
+     */
+    public SetLocation(locate : MapPos){
+        GMapsUtil.DrawOverlay(locate, '<div class="overlay">中継現場<div class="overlay_arrow above"></div></div>');
     }
 
     /**
