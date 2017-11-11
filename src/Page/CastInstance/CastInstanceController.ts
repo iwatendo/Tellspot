@@ -19,6 +19,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     public ControllerName(): string { return "CastInstance"; }
 
     public View: CastInstanceView;
+    public Stream: MediaStream;
 
     public CastInstance = new CastInstanceSender(CastTypeEnum.LiveCast);
     public CursorCache: CursorCache;
@@ -99,16 +100,20 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     /**
      * ストリーミングの開始
      */
-    public SetStreaming() {
-
-        let msc = StreamUtil.GetMediaTrackConstraintsMobile_RearCamera(true);
-        
-        StreamUtil.GetStreaming(msc, (stream) => { WebRTCService.StartStreaming(stream); });
-
-        //  オーナー 及び 接続クライアントに通知
+    public StartStreaming() {
+        WebRTCService.StartStreaming(this.Stream);
         this.ServerSend(true, false);
     }
 
+
+    /**
+     * ストリーミングの開始
+     */
+    public StopStreaming() {
+        StreamUtil.Stop(this.Stream);
+        this.ServerSend(false, false);
+    }
+    
 
     /**
      * ストリーミングの開始/停止の通知

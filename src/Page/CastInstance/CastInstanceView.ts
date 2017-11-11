@@ -1,14 +1,10 @@
 ﻿import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
 import WebRTCService from "../../Base/Common/WebRTCService";
-import LocalCache from "../../Base/Common/LocalCache";
+import GMapsUtil, { MapPos } from "../../Base/Util/GMapsUtil";
 import StdUtil from "../../Base/Util/StdUtil";
-import DeviceUtil, { DeviceKind } from "../../Base/Util/DeviceUtil";
-import LogUtil from "../../Base/Util/LogUtil";
 import StreamUtil from "../../Base/Util/StreamUtil";
 
 import CastInstanceController from "./CastInstanceController";
-import LinkUtil from "../../Base/Util/LinkUtil";
-import GMapsUtil, { MapPos } from "../../Base/Util/GMapsUtil";
 import { MapLocationSender } from "../HomeInstance/HomeInstanceContainer";
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
@@ -21,47 +17,27 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         StdUtil.StopPropagation();
         StdUtil.StopTouchmove();
 
-        let videoElement = document.getElementById('video') as HTMLVideoElement;
-        let startButton = document.getElementById('sbj-cast-instance-start');
-        let stopButton = document.getElementById('sbj-cast-instance-stop');
-        let settingButton = document.getElementById('sbj-cast-instance-settings');
-        let micElement = document.getElementById('mic-select-div');
-        let camElement = document.getElementById('webcam-select-div');
+        let startBotton = document.getElementById('sbj-cast-instance-start');
+        let stopBotton = document.getElementById('sbj-cast-instance-stop');
 
         //  ストリーミング開始ボタン
-        startButton.onclick = (e) => {
-            this.Controller.SetStreaming();
-            this.ChangeDisplayMode(true);
+        startBotton.onclick = (e) => {
+            this.Controller.StartStreaming();
             this.LocationPolling();
+            startBotton.hidden = true;
+            stopBotton.hidden = false;
         }
 
         //  ストリーミング停止ボタン
-        stopButton.onclick = (e) => {
-            this.Controller.ServerSend(false, false);
-            this.ChangeDisplayMode(false);
-            location.reload();
+        stopBotton.onclick = (e) => {
+            this.Controller.StopStreaming();
+            stopBotton.hidden = true;
+            startBotton.hidden = false;
         };
-
+        
         this.SetMediaDevice();
 
         callback();
-    }
-
-
-    /**
-     * 
-     * @param isLiveCasting 
-     */
-    public ChangeDisplayMode(isLiveCasting: boolean) {
-
-        let videoElement = document.getElementById('video');
-        let startButton = document.getElementById('sbj-cast-instance-start');
-        let stopButton = document.getElementById('sbj-cast-instance-stop');
-
-        startButton.hidden = isLiveCasting;
-        stopButton.hidden = !isLiveCasting;
-        //  videoElement.hidden = isLiveCasting;
-
     }
 
 
@@ -70,10 +46,14 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
      */
     public SetMediaDevice() {
         let controller = this.Controller;
+        //  let msc = StreamUtil.GetMediaTrackConstraintsMobile_RearCamera(false);
+        let msc = StreamUtil.GetMediaTrackConstraintsMobile_FrontCamera(false);
         let previewElement = document.getElementById('video') as HTMLVideoElement;
 
-        let msc = StreamUtil.GetMediaTrackConstraintsMobile_RearCamera(false);
-        StreamUtil.SetPreview(previewElement,msc);
+        StreamUtil.GetStreaming(msc, (stream) => {
+            controller.Stream = stream;
+            StreamUtil.StartPreview(previewElement, stream);
+        });
     }
 
 
@@ -95,16 +75,6 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
                 }
             });
         }, 1000);
-    }
-
-
-    /**
-     * 放送状況を表示する
-     * @param url 
-     */
-    public SetLiveCast(url:string){
-        let frame = document.getElementById('livecast') as HTMLIFrameElement;
-        frame.src = url;
     }
 
 
