@@ -21,10 +21,6 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     public View: CastInstanceView;
 
     public CastInstance = new CastInstanceSender(CastTypeEnum.LiveCast);
-
-    public AudioSource: string = null;
-    public VideoSource: string = null;
-
     public CursorCache: CursorCache;
 
     /**
@@ -105,12 +101,12 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      */
     public SetStreaming() {
 
-        StreamUtil.GetStreaming(this.AudioSource, this.VideoSource, (stream) => {
-            WebRTCService.StartStreaming(stream);
-        });
+        let msc = StreamUtil.GetMediaTrackConstraintsMobile_RearCamera(true);
+        
+        StreamUtil.GetStreaming(msc, (stream) => { WebRTCService.StartStreaming(stream); });
 
         //  オーナー 及び 接続クライアントに通知
-        this.ServerSend((this.AudioSource !== "" || this.VideoSource !== ""), false);
+        this.ServerSend(true, false);
     }
 
 

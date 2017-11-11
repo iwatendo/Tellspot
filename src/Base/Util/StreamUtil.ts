@@ -16,13 +16,13 @@ export default class StreamUtil {
 
 
     /**
-     * プレビュー設定
+     * 
      * @param element 
-     * @param videoSource 
+     * @param msc 
      */
-    public static SetPreview(element: HTMLVideoElement, videoSource: string) {
+    public static SetPreview(element: HTMLVideoElement, msc: MediaStreamConstraints) {
         if (element) {
-            this.GetMediaStream(videoSource, "", (stream) => {
+            this.GetMediaStream(msc, (stream) => {
                 this.StartPreview(element, stream);
             });
         }
@@ -67,11 +67,9 @@ export default class StreamUtil {
      * @param audioSource 
      * @param callback 
      */
-    private static GetMediaStream(videoSource: string, audioSource: string, callback: OnGetMediaStream) {
+    private static GetMediaStream(msc: MediaStreamConstraints, callback: OnGetMediaStream) {
 
-        let constraints = this.GetMediaTrackConstraints(videoSource, audioSource);
-
-        navigator.getUserMedia(constraints,
+        navigator.getUserMedia(msc,
             (stream) => {
                 callback(stream);
             }, (err: MediaStreamError) => {
@@ -87,13 +85,31 @@ export default class StreamUtil {
      * @param videoSource 
      * @param audioSource 
      */
-    private static GetMediaTrackConstraints(videoSource: string, audioSource: string): MediaStreamConstraints {
+    public static GetMediaTrackConstraints(videoSource: string, audioSource: string): MediaStreamConstraints {
 
         let result: MediaStreamConstraints = {
             video: (videoSource ? { advanced: ([{ deviceId: videoSource }]) } : false),
             audio: (audioSource ? { advanced: ([{ deviceId: audioSource }]) } : false),
         };
 
+        return result;
+    }
+
+
+    /**
+     * モバイル端末の場合のフロントカメラのMediaStreamConstraints取得
+     */
+    public static GetMediaTrackConstraintsMobile_FrontCamera(useAudio: boolean): MediaStreamConstraints {
+        let result: MediaStreamConstraints = { audio: useAudio, video: { facingMode: "user" } };
+        return result;
+    }
+
+
+    /**
+     * モバイル端末の場合のリアカメラのMediaStreamConstraints取得
+     */
+    public static GetMediaTrackConstraintsMobile_RearCamera(useAudio: boolean): MediaStreamConstraints {
+        let result: MediaStreamConstraints = { audio: useAudio, video: { facingMode: { exact: "environment" } } };
         return result;
     }
 
@@ -125,14 +141,14 @@ export default class StreamUtil {
      * @param videoSource 
      * @param callback 
      */
-    public static GetStreaming(audioSource: string, videoSource: string, callback: OnGetMediaStream) {
+    public static GetStreaming(msc: MediaStreamConstraints, callback: OnGetMediaStream) {
 
         if (!StdUtil.IsSafari()) {
             this.Stop();
         }
 
-        if (videoSource || audioSource) {
-            this.GetMediaStream(videoSource, audioSource, (stream) => {
+        if (msc) {
+            this.GetMediaStream(msc, (stream) => {
                 this.LocalStream = stream;
                 callback(stream);
             });
@@ -141,6 +157,7 @@ export default class StreamUtil {
             this.ClearStreaming();
         }
     }
+
 
     /**
      * 

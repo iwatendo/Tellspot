@@ -6,7 +6,6 @@ import DeviceUtil, { DeviceKind } from "../../Base/Util/DeviceUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 import StreamUtil from "../../Base/Util/StreamUtil";
 
-import { DeviceView } from "../DeviceView/DeviceVew";
 import CastInstanceController from "./CastInstanceController";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import GMapsUtil, { MapPos } from "../../Base/Util/GMapsUtil";
@@ -22,6 +21,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         StdUtil.StopPropagation();
         StdUtil.StopTouchmove();
 
+        let videoElement = document.getElementById('video') as HTMLVideoElement;
         let startButton = document.getElementById('sbj-cast-instance-start');
         let stopButton = document.getElementById('sbj-cast-instance-stop');
         let settingButton = document.getElementById('sbj-cast-instance-settings');
@@ -57,13 +57,9 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let videoElement = document.getElementById('video');
         let startButton = document.getElementById('sbj-cast-instance-start');
         let stopButton = document.getElementById('sbj-cast-instance-stop');
-        let micElement = document.getElementById('mic-select-div');
-        let camElement = document.getElementById('webcam-select-div');
 
         startButton.hidden = isLiveCasting;
         stopButton.hidden = !isLiveCasting;
-        micElement.hidden = isLiveCasting;
-        camElement.hidden = isLiveCasting;
         //  videoElement.hidden = isLiveCasting;
 
     }
@@ -73,45 +69,11 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
      * Video/Audioソースの取得とリストへのセット
      */
     public SetMediaDevice() {
-
         let controller = this.Controller;
-
         let previewElement = document.getElementById('video') as HTMLVideoElement;
-        let camSelectElement = document.getElementById('webcam-select') as HTMLInputElement;
-        var camListElement = document.getElementById('webcam-list') as HTMLElement;
-        let micSelectElement = document.getElementById('mic-select') as HTMLInputElement;
-        var micListElement = document.getElementById('mic-list') as HTMLElement;
 
-        DeviceUtil.GetAudioDevice((devices) => {
-
-            var view = new DeviceView(DeviceKind.Audio, micSelectElement, micListElement, devices,
-                (deviceId) => {
-                    controller.AudioSource = deviceId;
-                }
-            );
-
-            view.SelectDefaultDevice();
-            document.getElementById("mic-select-div").classList.add("is-dirty");
-        });
-
-        DeviceUtil.GetVideoDevice((devices) => {
-
-            var view = new DeviceView(DeviceKind.Video, camSelectElement, camListElement, devices,
-                (deviceId) => {
-                    controller.VideoSource = deviceId;
-                    if (deviceId) {
-                        //  StreamUtil.SetPreview(previewElement, deviceId);
-                    }
-                    else {
-                        //  StreamUtil.StopPreview(previewElement);
-                    }
-                }
-            );
-
-            view.SelectDefaultDevice();
-            document.getElementById("webcam-select-div").classList.add("is-dirty");
-        });
-
+        let msc = StreamUtil.GetMediaTrackConstraintsMobile_RearCamera(false);
+        StreamUtil.SetPreview(previewElement,msc);
     }
 
 
@@ -133,6 +95,16 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
                 }
             });
         }, 1000);
+    }
+
+
+    /**
+     * 放送状況を表示する
+     * @param url 
+     */
+    public SetLiveCast(url:string){
+        let frame = document.getElementById('livecast') as HTMLIFrameElement;
+        frame.src = url;
     }
 
 
