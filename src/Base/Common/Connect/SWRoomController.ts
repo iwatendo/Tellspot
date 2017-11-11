@@ -55,6 +55,14 @@ export default class SWRoomController implements ISWRoom {
 
 
     /**
+     * ストリームのリッフレッシュ
+     */
+    public Reflash(){
+        this.Room.Refresh();
+    }
+
+
+    /**
      * 接続している部屋から離脱します
      */
     public LeaveRoom() {

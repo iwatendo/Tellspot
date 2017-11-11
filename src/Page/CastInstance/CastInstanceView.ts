@@ -2,7 +2,7 @@
 import WebRTCService from "../../Base/Common/WebRTCService";
 import GMapsUtil, { MapPos } from "../../Base/Util/GMapsUtil";
 import StdUtil from "../../Base/Util/StdUtil";
-import StreamUtil from "../../Base/Util/StreamUtil";
+import StreamUtil, { MobileCam } from "../../Base/Util/StreamUtil";
 
 import CastInstanceController from "./CastInstanceController";
 import { MapLocationSender } from "../HomeInstance/HomeInstanceContainer";
@@ -19,6 +19,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
         let startBotton = document.getElementById('sbj-cast-instance-start');
         let stopBotton = document.getElementById('sbj-cast-instance-stop');
+        let camchangeBotton = document.getElementById('sbj-camchange');
 
         //  ストリーミング開始ボタン
         startBotton.onclick = (e) => {
@@ -26,6 +27,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             this.LocationPolling();
             startBotton.hidden = true;
             stopBotton.hidden = false;
+            camchangeBotton.hidden = true;
         }
 
         //  ストリーミング停止ボタン
@@ -33,9 +35,18 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             this.Controller.StopStreaming();
             stopBotton.hidden = true;
             startBotton.hidden = false;
+            camchangeBotton.hidden = false;
+            location.reload();
         };
-        
-        this.SetMediaDevice();
+
+        let cam = MobileCam.REAR;
+
+        camchangeBotton.onclick = (e) => {
+            cam = (cam === MobileCam.REAR ? MobileCam.FRONT : MobileCam.REAR);
+            this.SetStreamPreview(cam);
+        };
+
+        this.SetStreamPreview(MobileCam.REAR);
 
         callback();
     }
@@ -44,15 +55,21 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
     /**
      * Video/Audioソースの取得とリストへのセット
      */
-    public SetMediaDevice() {
+    public SetStreamPreview(cam: MobileCam) {
+
         let controller = this.Controller;
-        //  let msc = StreamUtil.GetMediaTrackConstraintsMobile_RearCamera(false);
-        let msc = StreamUtil.GetMediaTrackConstraintsMobile_FrontCamera(false);
-        let previewElement = document.getElementById('video') as HTMLVideoElement;
+
+        if (controller.Stream) {
+            StreamUtil.Stop(controller.Stream);
+        }
+
+        let msc = StreamUtil.GetMediaTrackConstraintsMobile(cam, true);
+
+        let videoElement = document.getElementById('video') as HTMLVideoElement;
 
         StreamUtil.GetStreaming(msc, (stream) => {
             controller.Stream = stream;
-            StreamUtil.StartPreview(previewElement, stream);
+            StreamUtil.StartPreview(videoElement, stream);
         });
     }
 

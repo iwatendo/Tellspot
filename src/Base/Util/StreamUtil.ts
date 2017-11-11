@@ -4,6 +4,10 @@ import LogUtil from "./LogUtil";
 declare var SkyWay: any;
 interface OnGetMediaStream { (stream: MediaStream): void }
 
+export enum MobileCam{
+    FRONT = 0,
+    REAR = 1,
+}
 
 export default class StreamUtil {
 
@@ -60,22 +64,18 @@ export default class StreamUtil {
 
 
     /**
-     * モバイル端末の場合のフロントカメラのMediaStreamConstraints取得
+     * モバイル端末のMediaStreamConstraints取得
      */
-    public static GetMediaTrackConstraintsMobile_FrontCamera(useAudio: boolean): MediaStreamConstraints {
-        let result: MediaStreamConstraints = { audio: useAudio, video: { facingMode: "user" } };
-        return result;
+    public static GetMediaTrackConstraintsMobile(cam: MobileCam,useAudio : boolean ): MediaStreamConstraints {
+
+        switch(cam){
+            case MobileCam.FRONT:
+                return { audio: useAudio, video: { facingMode: "user" }};
+            case MobileCam.REAR: 
+                return { audio: useAudio, video: { facingMode: { exact: "environment" } } };
+        }
     }
-
-
-    /**
-     * モバイル端末の場合のリアカメラのMediaStreamConstraints取得
-     */
-    public static GetMediaTrackConstraintsMobile_RearCamera(useAudio: boolean): MediaStreamConstraints {
-        let result: MediaStreamConstraints = { audio: useAudio, video: { facingMode: { exact: "environment" } } };
-        return result;
-    }
-
+    
 
     /**
      * 
@@ -108,7 +108,7 @@ export default class StreamUtil {
         }
     }
 
-
+    
     /**
      * 指定ストリームをミュートします
      * @param stream 

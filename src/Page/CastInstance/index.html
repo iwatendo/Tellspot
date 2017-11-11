@@ -18,18 +18,22 @@
     <div class="mdl-layout mdl-js-layout">
         <main id="sbj-cast-instance-main" class="mdl-layout__content">
 
-            <video id='video' autoplay="true" playsinline="true"></video>            
-            
-            <button id="sbj-cast-instance-start" class="sbj-cast-instance-button mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                <i class="material-icons">videocam</i>
-                &nbsp;現場からの中継を開始します&nbsp;
-            </button>
+            <video id='video' autoplay="true" playsinline="true" muted></video>
 
-            <button id="sbj-cast-instance-stop" class="sbj-cast-instance-button mdl-button mdl-js-button mdl-button--raised mdl-button--accent"
-                hidden>
-                <i class="material-icons">videocam_off</i>
-                &nbsp;以上、現場からの中継でした&nbsp;
-            </button>
+            <div id="sbj-actions" class="sbj-actions mdl-card__actions">
+                <button id="sbj-camchange" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    <i class="material-icons">cached</i>
+                    &nbsp;カメラ切替&nbsp;
+                </button>
+                <button id="sbj-cast-instance-start" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    <i class="material-icons">videocam</i>
+                    &nbsp;中継開始&nbsp;
+                </button>
+                <button id="sbj-cast-instance-stop" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" hidden>
+                    <i class="material-icons">videocam_off</i>
+                    &nbsp;中継終了&nbsp;
+                </button>
+            </div>
 
         </main>
 
@@ -42,7 +46,6 @@
 
     </div>
 
-    <script src="/lib/material.min.js"></script>
     <script src="/lib/react.min.js"></script>
     <script src="/lib/react-dom.min.js"></script>
     <script src="./bundle.js?v={version}"></script>

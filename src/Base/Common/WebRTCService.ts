@@ -61,6 +61,14 @@ export default class WebRTCService {
         this._swRoomController = new SWRoomController(this._swPeer, this._swPeer.PeerId, SWRoomMode.Mesh);
         this._swRoomController.SetStream(stream);
     }
+
+
+    /**
+     * ストリームのリフレッシュ
+     */
+    public static Reflash(){
+        this._swRoomController.Reflash();
+    }
     
 
     //  SWPeer Wrapper

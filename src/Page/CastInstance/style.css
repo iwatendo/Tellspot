@@ -12,8 +12,9 @@
     padding: 12px;
 }
 
-.sbj-cast-instance-button{
+.sbj-actions{
     position: absolute;
-    bottom: 24px;
-    left: 24px;
+    width: 100%;
+    bottom: 32px;
+    text-align: center;
 }

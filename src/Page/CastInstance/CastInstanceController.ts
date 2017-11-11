@@ -106,14 +106,19 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     }
 
 
+    public Reflash() {
+        WebRTCService.Reflash();
+    }
+
+
     /**
-     * ストリーミングの開始
+     * ストリーミングの停止
      */
     public StopStreaming() {
         StreamUtil.Stop(this.Stream);
         this.ServerSend(false, false);
     }
-    
+
 
     /**
      * ストリーミングの開始/停止の通知
