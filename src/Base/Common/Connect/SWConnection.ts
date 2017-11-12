@@ -1,5 +1,4 @@
 import { IServiceController } from "../IServiceController";
-import WebRTCService from "../WebRTCService";
 import LogUtil from "../../Util/LogUtil";
 import SWPeer from "./SWPeer";
 

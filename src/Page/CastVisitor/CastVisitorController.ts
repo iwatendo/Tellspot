@@ -1,5 +1,4 @@
 ﻿import AbstractServiceController from "../../Base/Common/AbstractServiceController";
-import WebRTCService from "../../Base/Common/WebRTCService";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
 import * as Personal from "../../Base/IndexedDB/Personal";
@@ -41,7 +40,7 @@ export default class CastVisitorController extends AbstractServiceController<Cas
     public OnOwnerConnection() {
 
         //  キャスト情報の要求
-        WebRTCService.SendToOwner(new GetCastSettingSedner());
+        this.SwPeer.SendToOwner(new GetCastSettingSedner());
 
         //  カーソル表示の初期化はOwnerとの接続後に開始する。
         this.View.InitializeCursor();

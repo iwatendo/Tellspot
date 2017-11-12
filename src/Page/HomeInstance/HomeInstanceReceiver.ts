@@ -1,6 +1,5 @@
 ﻿import Sender from "../../Base/Container/Sender";
 import AbstractServiceReceiver from "../../Base/Common/AbstractServiceReceiver";
-import WebRTCService from "../../Base/Common/WebRTCService";
 import * as HIContainer from "./HomeInstanceContainer";
 
 import HomeInstanceController from "./HomeInstanceController";
@@ -40,7 +39,7 @@ export default class HomeInstanceReceiver extends AbstractServiceReceiver<HomeIn
 
         if (!result) {
             let sender = new HIContainer.ConnectionErrorSender("他のユーザーが接続している為、接続できません。");
-            WebRTCService.SendTo(conn, sender);
+            this.Controller.SwPeer.SendTo(conn, sender);
         }
     }
 

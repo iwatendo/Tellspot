@@ -1,7 +1,6 @@
 ﻿
 import AbstractServiceController from "../../Base/Common/AbstractServiceController";
 import LocalCache from "../../Base/Common/LocalCache";
-import WebRTCService from "../../Base/Common/WebRTCService";
 import LogUtil from "../../Base/Util/LogUtil";
 
 import * as HIContainer from "./HomeInstanceContainer";
@@ -10,6 +9,7 @@ import HomeInstanceView from "./HomeInstanceView";
 import HomeInstanceModel from "./HomeInstanceModel";
 import { MapPos } from "../../Base/Util/GMapsUtil";
 import CastInstanceSender from "../../Base/Container/CastInstanceSender";
+import SWPeer from "../../Base/Common/Connect/SWPeer";
 
 
 /**

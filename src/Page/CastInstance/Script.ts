@@ -1,8 +1,8 @@
-﻿import WebRTCService from "../../Base/Common/WebRTCService";
-import StdUtil from "../../Base/Util/StdUtil";
+﻿import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LocalCache from "../../Base/Common/LocalCache";
 import CastInstanceController from "./CastInstanceController";
+import SWPeer from "../../Base/Common/Connect/SWPeer";
 
 if (StdUtil.IsExecute(true)) {
 
@@ -15,5 +15,6 @@ if (StdUtil.IsExecute(true)) {
         navigator.getUserMedia({ video: true, audio: true }, (stream) => { reload(); }, (err) => { reload(); });
     }
 
-    WebRTCService.Start(new CastInstanceController(), LinkUtil.GetPeerID());
+    let controller = new CastInstanceController();
+    controller.SwPeer = new SWPeer(controller,LinkUtil.GetPeerID(),()=>{});
 }

@@ -1,6 +1,5 @@
 ﻿
 import AbstractServiceController from "../../Base/Common/AbstractServiceController";
-import WebRTCService from "../../Base/Common/WebRTCService";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LogUtil from "../../Base/Util/LogUtil";
@@ -12,6 +11,8 @@ import CastInstanceModel from "./CastInstanceModel";
 import CastInstanceView from "./CastInstanceView";
 import { CastInstanceReceiver } from "./CastInstanceReceiver";
 import StreamUtil from "../../Base/Util/StreamUtil";
+import SWRoomController from "../../Base/Common/Connect/SWRoomController";
+import { SWRoomMode } from "../../Base/Common/Connect/SWRoom";
 
 
 export default class CastInstanceController extends AbstractServiceController<CastInstanceView, CastInstanceModel> {
@@ -63,7 +64,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
         this.CastInstance = new CastInstanceSender(CastTypeEnum.LiveCast);
         this.CastInstance.instanceUrl = location.href;
         this.CastInstance.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid);
-        WebRTCService.SendToOwner(this.CastInstance);
+        this.SwPeer.SendToOwner(this.CastInstance);
     }
 
 
@@ -72,7 +73,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      */
     public OnOwnerClose() {
         //  全てのクライアントとの接続を終了します
-        WebRTCService.Close();
+        this.SwPeer.Close();
         let msg = "接続先のブラウザが閉じられました。\nまたはネットワークが切断されました。\n";
         this.View.SetError(msg);
     }
@@ -101,13 +102,9 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      * ストリーミングの開始
      */
     public StartStreaming() {
-        WebRTCService.StartStreaming(this.Stream);
+        this.SwRoomController = new SWRoomController(this.SwPeer, this.SwPeer.PeerId, SWRoomMode.Mesh);
+        this.SwRoomController.SetStream(this.Stream);        
         this.ServerSend(true, false);
-    }
-
-
-    public Reflash() {
-        WebRTCService.Reflash();
     }
 
 
@@ -142,7 +139,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
 
         //  オーナー側への通知
         if (this.CastInstance) {
-            WebRTCService.SendToOwner(this.CastInstance);
+            this.SwPeer.SendToOwner(this.CastInstance);
         }
     }
 

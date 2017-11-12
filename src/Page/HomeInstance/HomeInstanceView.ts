@@ -1,7 +1,6 @@
 import * as JQuery from "jquery";
 import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
-import WebRTCService from "../../Base/Common/WebRTCService";
 import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
 
 import HomeInstanceController, { ServentLocation } from "./HomeInstanceController";

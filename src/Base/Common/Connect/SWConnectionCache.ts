@@ -1,5 +1,4 @@
 
-import WebRTCService from "../WebRTCService";
 import SWConnection from "./SWConnection";
 import { IServiceController } from "../IServiceController";
 import Sender from "../../Container/Sender";

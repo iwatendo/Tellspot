@@ -4,6 +4,8 @@ import { IServiceController } from "./IServiceController";
 import { IServiceReceiver } from "./IServiceReceiver";
 import { IServiceView } from "./IServiceView";
 import { IServiceModel } from "./IServiceModel";
+import SWPeer from "./Connect/SWPeer";
+import SWRoomController from "./Connect/SWRoomController";
 
 /**
  * Peerサービスコントローラーの抽象化クラス
@@ -12,9 +14,12 @@ export default abstract class AbstractServiceController<V extends IServiceView, 
 
     private _peer: PeerJs.Peer;
 
+    public SwPeer: SWPeer;
+    public SwRoomController: SWRoomController;
     public View: V;
     public Model: M;
     public Receiver: IServiceReceiver;
+    
 
     public abstract ControllerName(): string;
 

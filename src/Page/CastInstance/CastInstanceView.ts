@@ -1,5 +1,4 @@
 ﻿import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServiceView";
-import WebRTCService from "../../Base/Common/WebRTCService";
 import GMapsUtil, { MapPos } from "../../Base/Util/GMapsUtil";
 import StdUtil from "../../Base/Util/StdUtil";
 import StreamUtil, { MobileCam } from "../../Base/Util/StreamUtil";
@@ -79,6 +78,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
      */
     public LocationPolling() {
 
+        let controller = this.Controller;
         let pre = new MapPos();
 
         //  1秒毎に緯度経度を取得し、差異があれば送信
@@ -87,7 +87,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
                 if (pre.latitude !== gpos.latitude || pre.longitude !== gpos.longitude) {
                     let sender = new MapLocationSender();
                     sender.Location = gpos;
-                    WebRTCService.SendToOwner(sender);
+                    controller.SwPeer.SendToOwner(sender);
                     pre = gpos;
                 }
             });

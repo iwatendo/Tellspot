@@ -1,7 +1,16 @@
-﻿/**
+﻿import SWPeer from "./Connect/SWPeer";
+import SWRoomController from "./Connect/SWRoomController";
+
+/**
  * サービスコントローラー
  */
 export interface IServiceController {
+
+    //
+    SwPeer: SWPeer;
+
+    //
+    SwRoomController: SWRoomController;
 
     //  PeerIDの取得
     ControllerName(): string;
