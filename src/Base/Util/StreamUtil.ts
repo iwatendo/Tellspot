@@ -64,10 +64,10 @@ export default class StreamUtil {
 
 
     /**
-     * デフォルトのマイクだけのMediaStreamConstraints取得
+     * デフォルトデバイスの取得
      */
-    public static GetMediaStreamConstraints_DefaultMic(): MediaStreamConstraints {
-        return { audio: true, video: false };
+    public static GetMediaStreamConstraints_DefaultDevice(): MediaStreamConstraints {
+        return { audio: true, video: true };
     }
 
 

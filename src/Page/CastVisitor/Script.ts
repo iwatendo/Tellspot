@@ -8,6 +8,7 @@ import { SWRoomMode } from "../../Base/Common/Connect/SWRoom";
 import CastVisitorController from "./CastVisitorController";
 
 if (StdUtil.IsExecute()) {
+
     let videoElement = document.getElementById('sbj-video') as HTMLVideoElement;
     let ownerId = LinkUtil.GetPeerID();
 
@@ -15,13 +16,14 @@ if (StdUtil.IsExecute()) {
 
     controler.SwPeer = new SWPeer(controler, ownerId, () => {
 
-        let msc = StreamUtil.GetMediaStreamConstraints_DefaultMic();
+        let msc = StreamUtil.GetMediaStreamConstraints_DefaultDevice();
 
         StreamUtil.GetStreaming(msc, (stream) => {
             controler.SwRoomController = new SWRoomController(controler.SwPeer, ownerId, SWRoomMode.Mesh);
-            controler.SwRoomController.SetVideoElement(ownerId, videoElement);
+            controler.SwRoomController.SetMediaElement(ownerId, videoElement);
+            controler.SwRoomController.SetStream(stream);
         });
-        
+
     });
 
 }

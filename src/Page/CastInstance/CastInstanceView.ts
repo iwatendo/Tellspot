@@ -74,6 +74,15 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
 
     /**
+     * 他のユーザーからのストリーム接続時のMediaElement指定
+     * @param peerid 
+     */
+    public GetMediaElement(peerid : string) : HTMLMediaElement{
+        return document.getElementById('audio') as HTMLAudioElement;
+    }
+
+
+    /**
      * 位置情報を1秒毎に送る。
      */
     public LocationPolling() {

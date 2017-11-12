@@ -103,7 +103,9 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      */
     public StartStreaming() {
         this.SwRoomController = new SWRoomController(this.SwPeer, this.SwPeer.PeerId, SWRoomMode.Mesh);
-        this.SwRoomController.SetStream(this.Stream);        
+        this.SwRoomController.SetStream(this.Stream);
+        this.SwRoomController.OnRoomStreamMediaElement = this.View.GetMediaElement;
+
         this.ServerSend(true, false);
     }
 

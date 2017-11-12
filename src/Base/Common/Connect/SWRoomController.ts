@@ -6,13 +6,21 @@ import SWRoom, { ISWRoom, SWRoomMode } from "./SWRoom";
 
 
 interface OnGetMediaStream { (stream: MediaStream): void }
+
+/**
+ * ストリームが送られて来た時のHTMLMediaElementの生成イベント
+ */
+interface OnRoomStreamMediaElement { (peerid: string): HTMLMediaElement }
+
 declare var SkyWay: any;
 
 export default class SWRoomController implements ISWRoom {
 
-    private _elementMap = new Map<string, HTMLVideoElement>();
+    private _elementMap = new Map<string, HTMLMediaElement>();
 
     public Room: SWRoom;
+
+    public OnRoomStreamMediaElement: OnRoomStreamMediaElement;
 
     /**
      * コンストラクタ
@@ -31,7 +39,7 @@ export default class SWRoomController implements ISWRoom {
      * @param peerid 
      * @param videoElement 
      */
-    public SetVideoElement(peerid: string, videoElement: HTMLVideoElement) {
+    public SetMediaElement(peerid: string, videoElement: HTMLMediaElement) {
         if (this._elementMap.has(peerid)) {
             let preElement = this._elementMap.get(peerid);
         }
@@ -53,7 +61,7 @@ export default class SWRoomController implements ISWRoom {
     /**
      * ストリームのリフレッシュ
      */
-    public Reflash(){
+    public Reflash() {
         this.Room.Refresh();
     }
 
@@ -65,25 +73,6 @@ export default class SWRoomController implements ISWRoom {
         if (this.Room) {
             this.Room.Close();
         }
-    }
-
-
-    /**
-     * 
-     * @param peerid 
-     */
-    public GetVideoElement(peerid : string): HTMLVideoElement {
-
-        if (this._elementMap.has(peerid)) {
-            return this._elementMap.get(peerid);
-        }
-        else {
-            let newElement = document.createElement('video_' + peerid) as HTMLVideoElement;
-            newElement.id = peerid;
-            this._elementMap.set(peerid, newElement);
-            return newElement;
-        }
-
     }
 
 
@@ -150,7 +139,16 @@ export default class SWRoomController implements ISWRoom {
      */
     public OnRoomStream(peerid: string, stream: MediaStream) {
 
-        let element = this.GetVideoElement(peerid);
+        let map = this._elementMap;
+        let element: HTMLMediaElement;
+
+        if (map.has(peerid)) {
+            element = map.get(peerid);
+        }
+        else if (this.OnRoomStreamMediaElement) {
+            element = this.OnRoomStreamMediaElement(peerid)
+            map.set(peerid, element);
+        }
 
         if (element) {
             element.srcObject = stream;
@@ -165,9 +163,9 @@ export default class SWRoomController implements ISWRoom {
      * @param stream 
      */
     public OnRoomRemoveStream(peerid: string, stream: MediaStream) {
-        let element = this.GetVideoElement(peerid);
 
-        if (element) {
+        if (this._elementMap.has(peerid)) {
+            let element = this._elementMap.get(peerid);
             element.pause();
         }
     }
