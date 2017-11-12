@@ -43,14 +43,14 @@ export default class SWRoom {
 
     private _peer: PeerJs.Peer;
     private _service: IServiceController;
-    private _stream: any;
+    private _stream: MediaStream;
     private _room: any;
     private _mode: SWRoomMode;
     private _sender: ISWRoom;
     private _roomName: string;
 
 
-    public SetStream(stream) {
+    public SetStream(stream: MediaStream) {
 
         this._stream = stream;
         this._room.replaceStream(this._stream);
@@ -106,7 +106,7 @@ export default class SWRoom {
      * @param name 
      * @param mode 
      */
-    constructor(sender: ISWRoom, service: IServiceController, peer: PeerJs.Peer, name: string, mode: SWRoomMode, stream: any = null) {
+    constructor(sender: ISWRoom, service: IServiceController, peer: PeerJs.Peer, name: string, mode: SWRoomMode, stream: MediaStream = null) {
         this._sender = sender;
         this._peer = peer;
         this._service = service;

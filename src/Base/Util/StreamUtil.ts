@@ -4,7 +4,7 @@ import LogUtil from "./LogUtil";
 declare var SkyWay: any;
 interface OnGetMediaStream { (stream: MediaStream): void }
 
-export enum MobileCam{
+export enum MobileCam {
     FRONT = 0,
     REAR = 1,
 }
@@ -52,7 +52,7 @@ export default class StreamUtil {
      * @param videoSource 
      * @param audioSource 
      */
-    public static GetMediaTrackConstraints(videoSource: string, audioSource: string): MediaStreamConstraints {
+    public static GetMediaStreamConstraints(videoSource: string, audioSource: string): MediaStreamConstraints {
 
         let result: MediaStreamConstraints = {
             video: (videoSource ? { advanced: ([{ deviceId: videoSource }]) } : false),
@@ -64,18 +64,26 @@ export default class StreamUtil {
 
 
     /**
+     * デフォルトのマイクだけのMediaStreamConstraints取得
+     */
+    public static GetMediaStreamConstraints_DefaultMic(): MediaStreamConstraints {
+        return { audio: true, video: false };
+    }
+
+
+    /**
      * モバイル端末のMediaStreamConstraints取得
      */
-    public static GetMediaTrackConstraintsMobile(cam: MobileCam,useAudio : boolean ): MediaStreamConstraints {
+    public static GetMediaStreamConstraints_Mobile(cam: MobileCam, useAudio: boolean): MediaStreamConstraints {
 
-        switch(cam){
+        switch (cam) {
             case MobileCam.FRONT:
-                return { audio: useAudio, video: { facingMode: "user" }};
-            case MobileCam.REAR: 
+                return { audio: useAudio, video: { facingMode: "user" } };
+            case MobileCam.REAR:
                 return { audio: useAudio, video: { facingMode: { exact: "environment" } } };
         }
     }
-    
+
 
     /**
      * 
@@ -108,13 +116,13 @@ export default class StreamUtil {
         }
     }
 
-    
+
     /**
      * 指定ストリームをミュートします
      * @param stream 
      * @param value 
      */
-    public static SetMute(stream : MediaStream, value : boolean) {
+    public static SetMute(stream: MediaStream, value: boolean) {
         let tracks = stream.getAudioTracks();
         if (tracks.length > 0) {
             let track = tracks[0];

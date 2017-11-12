@@ -63,7 +63,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             StreamUtil.Stop(controller.Stream);
         }
 
-        let msc = StreamUtil.GetMediaTrackConstraintsMobile(cam, true);
+        let msc = StreamUtil.GetMediaStreamConstraints_Mobile(cam, true);
 
         let videoElement = document.getElementById('video') as HTMLVideoElement;
 

@@ -38,38 +38,40 @@ export default class WebRTCService {
 
 
     /**
-     * SFUルームに接続
-     * @param ownerid 
-     * @param videoElement 
-     */
-    public static CastRoomJoin(ownerid: string, videoElement: HTMLVideoElement = null) {
-
-        this._swRoomController = new SWRoomController(this._swPeer, ownerid, SWRoomMode.Mesh);
-        if (videoElement) {
-            this._swRoomController.SetVideoElement(ownerid, videoElement);
-        }
-    }
-
-
-    /**
      * ストリーミング開始
      * CastInstance等の、配信オーナーが呼ぶ処理
      * @param stream 
      */
-    public static StartStreaming(stream) {
-        //  自身のPeerIDでRoom生成します
+    public static StartStreaming(stream: MediaStream) {
+        //  自身のPeerIDでRoom生成
         this._swRoomController = new SWRoomController(this._swPeer, this._swPeer.PeerId, SWRoomMode.Mesh);
         this._swRoomController.SetStream(stream);
     }
 
 
     /**
+     * ルームに接続します
+     * @param ownerid 
+     * @param stream 
+     * @param videoElement 
+     */
+    public static RoomJoin(ownerid: string, stream: MediaStream = null, videoElement: HTMLVideoElement = null) {
+
+        this._swRoomController = new SWRoomController(this._swPeer, ownerid, SWRoomMode.Mesh, stream);
+        if (videoElement) {
+            this._swRoomController.SetVideoElement(ownerid, videoElement);
+        }
+
+    }
+
+
+    /**
      * ストリームのリフレッシュ
      */
-    public static Reflash(){
+    public static Reflash() {
         this._swRoomController.Reflash();
     }
-    
+
 
     //  SWPeer Wrapper
     public static PeerId(): string { return (this._swPeer ? this._swPeer.PeerId : ""); }
