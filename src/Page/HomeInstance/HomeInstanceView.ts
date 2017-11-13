@@ -42,6 +42,10 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
         };
     }
 
+    public SetMapLiveHidden(ishidden: boolean){
+        document.getElementById('livecast-cell').hidden = ishidden;
+        document.getElementById('map-cell').hidden = ishidden; 
+    }
 
     /**
      * 
@@ -50,10 +54,9 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
     public NotifyServent(sl: ServentLocation) {
 
         GMapsUtil.GetAddress(sl.Locate, (name) => {
+            this.SetMapLiveHidden(false);
             GMapsUtil.CreateMap('#map', sl.Locate);
-            let cell = document.getElementById('livecast-cell') as HTMLFrameElement;
             let frame = document.getElementById('livecast') as HTMLIFrameElement;
-            cell.hidden = false;
             frame.src = sl.Servent.clientUrl;
             this.SetLocation(sl.Locate);
         });
@@ -72,9 +75,8 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
      * 
      */
     public NotifyCloseServent(){
-        let cell = document.getElementById('livecast-cell') as HTMLFrameElement;
+        this.SetMapLiveHidden(true);
         let frame = document.getElementById('livecast') as HTMLIFrameElement;
-        cell.hidden = true;
         frame.src = "";
     }
 

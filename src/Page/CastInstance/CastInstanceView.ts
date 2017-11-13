@@ -8,6 +8,9 @@ import { MapLocationSender } from "../HomeInstance/HomeInstanceContainer";
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
 
+
+    private _isMute : boolean = false;
+
     /**
      * 初期化処理
      */
@@ -19,24 +22,37 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         let startBotton = document.getElementById('sbj-cast-instance-start');
         let stopBotton = document.getElementById('sbj-cast-instance-stop');
         let camchangeBotton = document.getElementById('sbj-camchange');
+        let volumeButton = document.getElementById('sbj-volume-button');
+        let volumeOn = document.getElementById("sbj-volume-on");
+        let volumeOff = document.getElementById("sbj-volume-off");
 
         //  ストリーミング開始ボタン
         startBotton.onclick = (e) => {
             this.Controller.StartStreaming();
             this.LocationPolling();
             startBotton.hidden = true;
-            stopBotton.hidden = false;
             camchangeBotton.hidden = true;
+            stopBotton.hidden = false;
+            volumeButton.hidden = false;
         }
 
         //  ストリーミング停止ボタン
         stopBotton.onclick = (e) => {
             this.Controller.StopStreaming();
+            volumeButton.hidden = true;
             stopBotton.hidden = true;
             startBotton.hidden = false;
             camchangeBotton.hidden = false;
             location.reload();
         };
+
+        //  ミュートボタン
+        volumeButton.onclick = (e) => {
+            this._isMute = !this._isMute;
+            volumeOn.hidden = this._isMute;
+            volumeOff.hidden = !this._isMute;
+            //  実装中
+        }
 
         let cam = MobileCam.REAR;
 
@@ -77,8 +93,9 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
      * 他のユーザーからのストリーム接続時のMediaElement指定
      * @param peerid 
      */
-    public GetMediaElement(peerid : string) : HTMLMediaElement{
-        return document.getElementById('audio') as HTMLAudioElement;
+    public GetMediaElement(peerid: string): HTMLMediaElement {
+        let audioElement = document.getElementById('audio') as HTMLAudioElement;
+        return audioElement;
     }
 
 

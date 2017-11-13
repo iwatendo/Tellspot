@@ -13,7 +13,7 @@
 
 .qrcode {
   background-color: var(--sbj-color-qrcode-background);
-  margin: 0px auto;
+  margin: 8px auto;
 }
 
 .livecast{

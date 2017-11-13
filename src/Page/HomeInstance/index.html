@@ -29,24 +29,25 @@
                             </button>
                         </div>
                         <div class="mdl-card__supporting-text no-left-padding">
-                            接続URL（またはQRコード）にアクセスする事で、スマホ（タブレット）から現場中継ができるサービスです。 ユーザー登録やアプリ不用で利用できます。
+                            接続URLまたはQRコードにアクセスするだけで
+                            <br/>スマートフォンやタブレットから現場中継ができるサービスです 
                             <br/>
-                            <br/> ・接続URLは毎回変更されます。
-                            <br/> ・iOS11 / Android7.1.1 以降の端末に対応しています。
+                            <br/>　・iOS11 / Android7.1.1 以降の端末に対応しています。
+                            <br/>　・近くで利用する場合はハウリングに注意してください。
+                            <br/>　・接続URLは毎回変更されます。
+                            <br/>　・WebRTC(<a class="skyway-link" href="https://webrtc.ecl.ntt.com/" target="_blank">SkyWay</a>)を利用したサービスです。
                             <br/>
-                            <br/> NTT Communicationsの
-                            <a class="skyway-link" href="https://webrtc.ecl.ntt.com/" target="_blank">SkyWay</a>を利用したサービスです。
-                            <br/>
+                            <br/> GitHub: <a href="https://github.com/iwatendo/Tellspot" target="_blank">Tellspot</a>
                         </div>
                     </div>
-                    <div class="mdl-card__media mdl-cell mdl-cell--12-col-tablet">
+                    <div class="mdl-cell mdl-cell--12-col-tablet">
                         <div class="qrbase">
                             <div class="qrcode" id="qrcode">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div id="map-cell" class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
+                <div id="map-cell" class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp" hidden>
                     <div class="map" id="map"></div>
                 </div>
                 <div id="livecast-cell" class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp" hidden>
