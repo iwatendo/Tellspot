@@ -72,6 +72,17 @@ export default class StreamUtil {
 
 
     /**
+     * デフォルトデバイスの取得
+     */
+    public static GetMediaStreamConstraints_AudioDevice(audioSource: string): MediaStreamConstraints {
+        return  {
+            video: true,
+            audio: (audioSource ? { advanced: ([{ deviceId: audioSource }]) } : true),
+        };
+    }
+    
+
+    /**
      * モバイル端末のMediaStreamConstraints取得
      */
     public static GetMediaStreamConstraints_Mobile(cam: MobileCam, useAudio: boolean): MediaStreamConstraints {

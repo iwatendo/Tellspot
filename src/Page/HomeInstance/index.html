@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel='stylesheet' href='../common.css?v={version}' />
     <link rel='stylesheet' href='style.css?v={version}' />
+	<script src="/lib/material.min.js"></script>
 </head>
 
 <body>
@@ -30,14 +31,16 @@
                         </div>
                         <div class="mdl-card__supporting-text no-left-padding">
                             接続URLまたはQRコードにアクセスするだけで
-                            <br/>スマートフォンやタブレットから現場中継ができるサービスです 
+                            <br/>スマートフォンやタブレットから現場中継ができるサービスです
                             <br/>
                             <br/>　・iOS11 / Android7.1.1 以降の端末に対応しています。
                             <br/>　・近くで利用する場合はハウリングに注意してください。
                             <br/>　・接続URLは毎回変更されます。
-                            <br/>　・WebRTC(<a class="skyway-link" href="https://webrtc.ecl.ntt.com/" target="_blank">SkyWay</a>)を利用したサービスです。
+                            <br/>　・WebRTC(
+                            <a class="skyway-link" href="https://webrtc.ecl.ntt.com/" target="_blank">SkyWay</a>)を利用したサービスです。
                             <br/>
-                            <br/> GitHub: <a href="https://github.com/iwatendo/Tellspot" target="_blank">Tellspot</a>
+                            <br/> GitHub:
+                            <a href="https://github.com/iwatendo/Tellspot" target="_blank">Tellspot</a>
                         </div>
                     </div>
                     <div class="mdl-cell mdl-cell--12-col-tablet">
@@ -53,10 +56,26 @@
                 <div id="livecast-cell" class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp" hidden>
                     <iframe class="livecast" id="livecast"></iframe>
                 </div>
+                <div id="setting-cell" class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
+                    <div class="sbj-voicechat-device">
+                        <div class="sbj-voicechat-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="mic-select-div">
+                            <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="mic-select" />
+                            <label class="mdl-textfield__label" for="mic-select" maxlength='40'>マイク</label>
+                            <ul id="mic-list" class="mdl-menu mdl-menu--top-left mdl-js-menu mdl-js-ripple-effect" for="mic-select">
+                                <li class="mdl-menu__item"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
         </main>
+
+        <input id="select-audio-device" type="text" hidden/>
+        
     </div>
 
+	<script src="/lib/react.min.js"></script>
+	<script src="/lib/react-dom.min.js"></script>
     <script src="bundle.js?v={version}"></script>
 
 </body>

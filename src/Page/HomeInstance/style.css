@@ -69,3 +69,17 @@
     border-right:16px solid transparent;
     border-bottom:16px solid #336699;
   }
+
+
+.sbj-voicechat-device-select{
+  width: 400px;
+}
+
+.sbj-voicechat-device{
+  padding: 16px;
+}
+
+#setting-cell{
+  overflow: visible;
+  min-height: 104px;
+}

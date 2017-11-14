@@ -5,10 +5,11 @@ import AbstractServiceView, { OnViewLoad } from "../../Base/Common/AbstractServi
 
 import HomeInstanceController, { ServentLocation } from "./HomeInstanceController";
 import GMapsUtil, { MapPos } from "../../Base/Util/GMapsUtil";
+import DeviceUtil, { DeviceKind } from "../../Base/Util/DeviceUtil";
+import { DeviceView } from "../DeviceView/DeviceVew";
 
 
 export default class HomeInstanceView extends AbstractServiceView<HomeInstanceController> {
-
 
     /**
      * 初期化処理
@@ -16,6 +17,7 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
      */
     protected Initialize(callback: OnViewLoad) {
         StdUtil.StopPropagation();
+        this.SetMediaDevice();
     }
 
 
@@ -42,10 +44,36 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
         };
     }
 
-    public SetMapLiveHidden(ishidden: boolean){
-        document.getElementById('livecast-cell').hidden = ishidden;
-        document.getElementById('map-cell').hidden = ishidden; 
+
+
+    public ChnageDisplayMode(isLive: boolean) {
+        document.getElementById('setting-cell').hidden = isLive;
+        document.getElementById('livecast-cell').hidden = !isLive;
+        document.getElementById('map-cell').hidden = !isLive;
     }
+
+
+    /**
+     * Audioソースの取得とリストへのセット
+     */
+    public SetMediaDevice() {
+
+        DeviceUtil.GetAudioDevice((devices) => {
+
+            let textElement = document.getElementById('mic-select') as HTMLInputElement;
+            var listElement = document.getElementById('mic-list') as HTMLElement;
+
+            var view = new DeviceView(DeviceKind.Audio, textElement, listElement, devices, (deviceId, deviceName) => {
+                (document.getElementById('select-audio-device') as HTMLInputElement).value = deviceId;
+            });
+
+            view.SelectFirstDevice();
+
+            document.getElementById("mic-select-div").classList.add("is-dirty");
+        });
+
+    }
+
 
     /**
      * 
@@ -54,7 +82,7 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
     public NotifyServent(sl: ServentLocation) {
 
         GMapsUtil.GetAddress(sl.Locate, (name) => {
-            this.SetMapLiveHidden(false);
+            this.ChnageDisplayMode(true);
             GMapsUtil.CreateMap('#map', sl.Locate);
             let frame = document.getElementById('livecast') as HTMLIFrameElement;
             frame.src = sl.Servent.clientUrl;
@@ -67,15 +95,15 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
      * 
      * @param locate 
      */
-    public SetLocation(locate : MapPos){
+    public SetLocation(locate: MapPos) {
         GMapsUtil.DrawOverlay(locate, '<div class="overlay">中継現場<div class="overlay_arrow above"></div></div>');
     }
 
     /**
      * 
      */
-    public NotifyCloseServent(){
-        this.SetMapLiveHidden(true);
+    public NotifyCloseServent() {
+        this.ChnageDisplayMode(false);
         let frame = document.getElementById('livecast') as HTMLIFrameElement;
         frame.src = "";
     }
