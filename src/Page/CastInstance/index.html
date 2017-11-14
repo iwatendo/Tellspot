@@ -19,14 +19,19 @@
     <div class="mdl-layout mdl-js-layout">
         <main id="sbj-cast-instance-main" class="mdl-layout__content">
 
-            <video id='video' autoplay="true" playsinline="true" muted></video>
             <audio id='audio' autoplay="true" hidden></audio>
+            <video id='video' autoplay="true" playsinline="true" muted></video>
 
             <div id="sbj-actions" class="sbj-actions mdl-card__actions">
-                <button id="sbj-volume-button" class="sbj-volume-button mdl-button mdl-js-button mdl-button--icon" hidden>
-                    <i id="sbj-volume-on" class="material-icons">volume_up</i>
-                    <i id="sbj-volume-off" hidden class="material-icons">volume_off</i>
+                <button id="sbj-volume-button-on" class="sbj-volume-button mdl-button mdl-js-button mdl-button--raised mdl-button--icon mdl-button--colored" hidden disabled>
+                    <i class="material-icons">volume_up</i>
                 </button>
+                <button id="sbj-volume-button-off" class="sbj-volume-button mdl-button mdl-js-button mdl-button--raised mdl-button--icon mdl-button--accent" hidden disabled>
+                    <i class="material-icons">volume_off</i>
+                </button>
+                <div id="sbj-volume" class="sbj-volume" hidden>
+                    <input id="sbj-volume-slider" type="range" min="0" max="100" value="0" tabindex="0" disabled>
+                </div>
                 <button id="sbj-camchange" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                     <i class="material-icons">cached</i>
                     &nbsp;カメラ切替&nbsp;

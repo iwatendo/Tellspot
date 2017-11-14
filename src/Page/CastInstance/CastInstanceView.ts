@@ -5,53 +5,81 @@ import StreamUtil, { MobileCam } from "../../Base/Util/StreamUtil";
 
 import CastInstanceController from "./CastInstanceController";
 import { MapLocationSender } from "../HomeInstance/HomeInstanceContainer";
+import SWRoomController from "../../Base/Common/Connect/SWRoomController";
+import LinkUtil from "../../Base/Util/LinkUtil";
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
 
-
-    private _isMute : boolean = false;
+    private _isAudioInit = false;
+    private _preVolumeValue: string = "70";
+    private static _mediaStream: MediaStream = null;
+    private _audioContext: AudioContext = null;
+    private _mediaStreamNode: MediaStreamAudioSourceNode = null;
+    private _gainNode: GainNode = null;
 
     /**
      * 初期化処理
      */
     public Initialize(callback: OnViewLoad) {
 
+        (window as any).AudioContext = (window as any).AudioContext || (window as any).webkitAudioContext;
         StdUtil.StopPropagation();
         StdUtil.StopTouchmove();
 
+        let audioElement = document.getElementById('audio') as HTMLAudioElement;
         let startBotton = document.getElementById('sbj-cast-instance-start');
         let stopBotton = document.getElementById('sbj-cast-instance-stop');
         let camchangeBotton = document.getElementById('sbj-camchange');
-        let volumeButton = document.getElementById('sbj-volume-button');
-        let volumeOn = document.getElementById("sbj-volume-on");
-        let volumeOff = document.getElementById("sbj-volume-off");
+        let volumeOn = document.getElementById("sbj-volume-button-on");
+        let volumeOff = document.getElementById("sbj-volume-button-off");
+        let sliderDiv = document.getElementById("sbj-volume");
+        let volumeSlider = document.getElementById("sbj-volume-slider") as HTMLInputElement;
 
         //  ストリーミング開始ボタン
         startBotton.onclick = (e) => {
             this.Controller.StartStreaming();
             this.LocationPolling();
             startBotton.hidden = true;
-            camchangeBotton.hidden = true;
             stopBotton.hidden = false;
-            volumeButton.hidden = false;
+            camchangeBotton.hidden = true;
+            volumeOff.hidden = false;
+            sliderDiv.hidden = false;
         }
 
         //  ストリーミング停止ボタン
         stopBotton.onclick = (e) => {
+
             this.Controller.StopStreaming();
-            volumeButton.hidden = true;
-            stopBotton.hidden = true;
-            startBotton.hidden = false;
-            camchangeBotton.hidden = false;
-            location.reload();
+            //  ページごと閉じてしまう。
+            this.PageClose();
         };
 
-        //  ミュートボタン
-        volumeButton.onclick = (e) => {
-            this._isMute = !this._isMute;
-            volumeOn.hidden = this._isMute;
-            volumeOff.hidden = !this._isMute;
-            //  実装中
+        let isSafari = StdUtil.IsSafari();
+        let isInit = false;
+
+        //  ミュート状態解除
+        volumeOff.onclick = (e) => {
+            volumeOn.hidden = false;
+            volumeOff.hidden = true;
+            this.SetMute(false, isSafari);
+        }
+
+        //  ミュートにする
+        volumeOn.onclick = (e) => {
+            volumeOn.hidden = true;
+            volumeOff.hidden = false;
+            this.SetMute(true, isSafari);
+        }
+
+        //  音量調整
+        volumeSlider.oninput = (e) => {
+            let volumeStr = volumeSlider.value;
+
+            let isMute = (volumeStr === "0");
+            volumeOn.hidden = isMute;
+            volumeOff.hidden = !isMute;
+
+            this.SetVolume(volumeStr, isSafari);
         }
 
         let cam = MobileCam.REAR;
@@ -64,6 +92,97 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         this.SetStreamPreview(MobileCam.REAR);
 
         callback();
+    }
+
+
+    /**
+     * ページごと閉じる
+     */
+    public PageClose() {
+        window.open('about:blank', '_self').close();
+    }
+
+
+    /**
+     * ボリューム設定
+     * @param volume 
+     * @param isSafari 
+     */
+    private SetVolume(volumeStr: string, isSafari: boolean) {
+
+        let volume = (Number.parseInt(volumeStr) / 100.0);
+
+        if (!this._isAudioInit && volume > 0) {
+            this.InitilizeAudio(isSafari);
+            this._isAudioInit = true;
+        }
+
+        if (isSafari) {
+            this._gainNode.gain.value = volume;
+        }
+        else {
+            (document.getElementById('audio') as HTMLAudioElement).volume = volume;
+        }
+    }
+
+
+    /**
+     * 
+     * @param isMute 
+     * @param isSafari 
+     */
+    private SetMute(isMute: boolean, isSafari: boolean) {
+        let slider = document.getElementById("sbj-volume-slider") as HTMLInputElement;
+        if (isMute) {
+            this._preVolumeValue = slider.value;
+            slider.value = "0";
+        }
+        else {
+            slider.value = this._preVolumeValue;
+        }
+        this.SetVolume(slider.value, isSafari);
+    }
+
+
+    /**
+     * 
+     * @param isSafari 
+     */
+    private InitilizeAudio(isSafari: boolean) {
+        if (isSafari) {
+            this.SetStream_WebAudio();
+        }
+        else {
+            let audioElement = document.getElementById('audio') as HTMLAudioElement;
+            this.SetStream_AudioElement(audioElement);
+        }
+    }
+
+    /**
+     * 
+     * @param audioElement 
+     */
+    private SetStream_AudioElement(audioElement: HTMLAudioElement) {
+        audioElement.volume = 0;
+        audioElement.srcObject = CastInstanceView._mediaStream;
+        audioElement.play();
+    }
+
+
+    /**
+     * 
+     * @param isMute 
+     */
+    private SetStream_WebAudio() {
+
+        if (CastInstanceView._mediaStream) {
+            this._audioContext = new AudioContext();
+            this._mediaStreamNode = this._audioContext.createMediaStreamSource(CastInstanceView._mediaStream);
+            this._gainNode = this._audioContext.createGain();
+            this._mediaStreamNode.connect(this._gainNode);
+            this._gainNode.gain.value = 0;
+            this._gainNode.connect(this._audioContext.destination);
+        }
     }
 
 
@@ -84,18 +203,22 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
         StreamUtil.GetStreaming(msc, (stream) => {
             controller.Stream = stream;
-            StreamUtil.StartPreview(videoElement, stream);
+            if (videoElement) {
+                StreamUtil.StartPreview(videoElement, stream);
+            }
         });
     }
 
 
     /**
-     * 他のユーザーからのストリーム接続時のMediaElement指定
+     * 他のユーザーからのストリーム接続時イベント
      * @param peerid 
      */
-    public GetMediaElement(peerid: string): HTMLMediaElement {
-        let audioElement = document.getElementById('audio') as HTMLAudioElement;
-        return audioElement;
+    public SetMediaStream(peerid: string, stream: MediaStream, isAlive: boolean) {
+        CastInstanceView._mediaStream = stream;
+        (document.getElementById("sbj-volume-button-on") as HTMLInputElement).disabled = false;
+        (document.getElementById("sbj-volume-button-off") as HTMLInputElement).disabled = false;
+        (document.getElementById("sbj-volume-slider") as HTMLInputElement).disabled = false;
     }
 
 

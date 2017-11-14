@@ -20,7 +20,6 @@
 }
 
 .sbj-volume-button {
-    background-color: var(--sbj-color-timeline-panel);
     border-radius: 6px;
     z-index: 2;
 }
@@ -29,9 +28,4 @@
     display: inline-block;
     width: 160px;
     margin: 0px 0px 0px -5px;
-}
-
-.sbj-volume-dummy{
-    width: 160px;
-    height: 4px;
 }

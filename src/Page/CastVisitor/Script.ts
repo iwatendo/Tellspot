@@ -9,7 +9,6 @@ import CastVisitorController from "./CastVisitorController";
 
 if (StdUtil.IsExecute()) {
 
-    let videoElement = document.getElementById('sbj-video') as HTMLVideoElement;
     let ownerId = LinkUtil.GetPeerID();
 
     let controler = new CastVisitorController();
@@ -19,8 +18,21 @@ if (StdUtil.IsExecute()) {
         let msc = StreamUtil.GetMediaStreamConstraints_DefaultDevice();
 
         StreamUtil.GetStreaming(msc, (stream) => {
-            controler.SwRoomController = new SWRoomController(controler.SwPeer, ownerId, SWRoomMode.Mesh);
-            controler.SwRoomController.SetMediaElement(ownerId, videoElement);
+            controler.SwRoomController = new SWRoomController(controler.SwPeer, ownerId, SWRoomMode.Mesh, (peerid, stream, isAlive) => {
+                if (peerid === ownerId) {
+                    let videoElement = document.getElementById('sbj-video') as HTMLVideoElement;
+
+                    if (videoElement) {
+                        if (isAlive) {
+                            videoElement.srcObject = stream;
+                            videoElement.play();
+                        }
+                        else {
+                            videoElement.pause();
+                        }
+                    }
+                }
+            });
             controler.SwRoomController.SetStream(stream);
         });
 
