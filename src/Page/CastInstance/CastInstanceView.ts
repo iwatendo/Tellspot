@@ -199,7 +199,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
         let msc = StreamUtil.GetMediaStreamConstraints_Mobile(cam, true);
 
-        let videoElement = document.getElementById('video') as HTMLVideoElement;
+        let videoElement = document.getElementById('video-preview') as HTMLVideoElement;
 
         StreamUtil.GetStreaming(msc, (stream) => {
             controller.Stream = stream;
@@ -216,6 +216,10 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
      */
     public SetMediaStream(peerid: string, stream: MediaStream, isAlive: boolean) {
         CastInstanceView._mediaStream = stream;
+
+        let videoRecv = document.getElementById('video-reciver') as HTMLVideoElement;
+        videoRecv.srcObject = stream;
+
         (document.getElementById("sbj-volume-button-on") as HTMLInputElement).disabled = false;
         (document.getElementById("sbj-volume-button-off") as HTMLInputElement).disabled = false;
         (document.getElementById("sbj-volume-slider") as HTMLInputElement).disabled = false;

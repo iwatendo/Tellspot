@@ -15,15 +15,17 @@ if (StdUtil.IsExecute()) {
 
     controler.SwPeer = new SWPeer(controler, ownerId, () => {
 
-        let audioDeivceId = "";
+        let audioDeviceId = "";
+        let videoDeviceId = "";
         if (window.parent) {
-            let audioDeivceElement = window.parent.document.getElementById('select-audio-device') as HTMLInputElement;
-            if (audioDeivceElement) {
-                audioDeivceId = audioDeivceElement.value;
-            }
+            let audioDeviceElement = window.parent.document.getElementById('select-audio-device') as HTMLInputElement;
+            if (audioDeviceElement) audioDeviceId = audioDeviceElement.value;
+
+            let videoDeviceElement = window.parent.document.getElementById('select-video-device') as HTMLInputElement;
+            if (videoDeviceElement) videoDeviceId = videoDeviceElement.value;
         }
 
-        let msc = StreamUtil.GetMediaStreamConstraints_AudioDevice(audioDeivceId);
+        let msc = StreamUtil.GetMediaStreamConstraints(videoDeviceId, audioDeviceId);
 
         StreamUtil.GetStreaming(msc, (stream) => {
             controler.SwRoomController = new SWRoomController(controler.SwPeer, ownerId, SWRoomMode.Mesh, (peerid, stream, isAlive) => {

@@ -70,13 +70,12 @@
     border-bottom:16px solid #336699;
   }
 
-
-.sbj-voicechat-device-select{
-  width: 400px;
+.sbj-device{
+  padding: 16px;
 }
 
-.sbj-voicechat-device{
-  padding: 16px;
+.sbj-device-select{
+  width: 400px;
 }
 
 #setting-cell{

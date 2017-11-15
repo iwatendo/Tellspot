@@ -58,6 +58,21 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
      */
     public SetMediaDevice() {
 
+        DeviceUtil.GetVideoDevice((devices) => {
+
+            let textElement = document.getElementById('camera-select') as HTMLInputElement;
+            var listElement = document.getElementById('camera-list') as HTMLElement;
+
+            var view = new DeviceView(DeviceKind.Video, textElement, listElement, devices, (deviceId, deviceName) => {
+                (document.getElementById('select-video-device') as HTMLInputElement).value = deviceId;
+            });
+
+            view.SelectFirstDevice();
+
+            document.getElementById("camera-select-div").classList.add("is-dirty");
+        });
+
+
         DeviceUtil.GetAudioDevice((devices) => {
 
             let textElement = document.getElementById('mic-select') as HTMLInputElement;

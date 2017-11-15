@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel='stylesheet' href='../common.css?v={version}' />
     <link rel='stylesheet' href='style.css?v={version}' />
-	<script src="/lib/material.min.js"></script>
+    <script src="/lib/material.min.js"></script>
 </head>
 
 <body>
@@ -56,9 +56,18 @@
                 <div id="livecast-cell" class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp" hidden>
                     <iframe class="livecast" id="livecast"></iframe>
                 </div>
-                <div id="setting-cell" class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
-                    <div class="sbj-voicechat-device">
-                        <div class="sbj-voicechat-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="mic-select-div">
+                <div id="setting-cell" class="mdl-grid mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
+                    <div class="mdl-cell mdl-cell--6-col">
+                        <div class="sbj-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="camera-select-div">
+                            <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="camera-select" />
+                            <label class="mdl-textfield__label" for="camera-select" maxlength='40'>カメラ</label>
+                            <ul id="camera-list" class="mdl-menu mdl-menu--top-left mdl-js-menu mdl-js-ripple-effect" for="camera-select">
+                                <li class="mdl-menu__item"></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col">
+                        <div class="sbj-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="mic-select-div">
                             <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="mic-select" />
                             <label class="mdl-textfield__label" for="mic-select" maxlength='40'>マイク</label>
                             <ul id="mic-list" class="mdl-menu mdl-menu--top-left mdl-js-menu mdl-js-ripple-effect" for="mic-select">
@@ -68,14 +77,15 @@
                     </div>
                 </div>
             </div>
-        </main>
+    </div>
+    </main>
 
-        <input id="select-audio-device" type="text" hidden/>
-        
+    <input id="select-video-device" type="text" hidden/>
+    <input id="select-audio-device" type="text" hidden/>
     </div>
 
-	<script src="/lib/react.min.js"></script>
-	<script src="/lib/react-dom.min.js"></script>
+    <script src="/lib/react.min.js"></script>
+    <script src="/lib/react-dom.min.js"></script>
     <script src="bundle.js?v={version}"></script>
 
 </body>
