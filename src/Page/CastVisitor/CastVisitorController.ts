@@ -29,7 +29,6 @@ export default class CastVisitorController extends AbstractServiceController<Cas
     public OnPeerOpen(peer: PeerJs.Peer) {
 
         this.View = new CastVisitorView(this, () => {
-            //  
         });
     }
 
@@ -63,6 +62,21 @@ export default class CastVisitorController extends AbstractServiceController<Cas
     public OnChildClose(conn: PeerJs.DataConnection) {
         super.OnChildClose(conn);
         this.View.Cursor.Remove(conn.peer);
+    }
+
+
+    /**
+     * 親フレームで選択されているデバイスIDを取得
+     * @param elementId 
+     */
+    public GetDeviceId(elementId) {
+        if (window.parent) {
+            let element = window.parent.document.getElementById(elementId) as HTMLInputElement;
+            if (element) {
+                return element.value;
+            }
+        }
+        return "";
     }
 
 };

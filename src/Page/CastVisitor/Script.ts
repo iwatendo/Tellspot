@@ -15,37 +15,25 @@ if (StdUtil.IsExecute()) {
 
     controler.SwPeer = new SWPeer(controler, ownerId, () => {
 
-        let audioDeviceId = "";
-        let videoDeviceId = "";
-        if (window.parent) {
-            let audioDeviceElement = window.parent.document.getElementById('select-audio-device') as HTMLInputElement;
-            if (audioDeviceElement) audioDeviceId = audioDeviceElement.value;
+        let videoElement = document.getElementById('sbj-video') as HTMLVideoElement;
 
-            let videoDeviceElement = window.parent.document.getElementById('select-video-device') as HTMLInputElement;
-            if (videoDeviceElement) videoDeviceId = videoDeviceElement.value;
-        }
-
+        let audioDeviceId = controler.GetDeviceId('select-audio-device');
+        let videoDeviceId = controler.GetDeviceId('select-video-device');
         let msc = StreamUtil.GetMediaStreamConstraints(videoDeviceId, audioDeviceId);
 
         StreamUtil.GetStreaming(msc, (stream) => {
             controler.SwRoomController = new SWRoomController(controler.SwPeer, ownerId, SWRoomMode.Mesh, (peerid, stream, isAlive) => {
-                if (peerid === ownerId) {
-                    let videoElement = document.getElementById('sbj-video') as HTMLVideoElement;
 
-                    if (videoElement) {
-                        if (isAlive) {
-                            videoElement.srcObject = stream;
-                            videoElement.play();
-                        }
-                        else {
-                            videoElement.pause();
-                        }
-                    }
+                if (peerid !== ownerId || !videoElement) return;
+
+                if (isAlive) {
+                    videoElement.srcObject = stream;
+                    videoElement.play();
                 }
-            });
-            controler.SwRoomController.SetStream(stream);
+                else {
+                    videoElement.pause();
+                }
+            }, stream);
         });
-
     });
-
 }

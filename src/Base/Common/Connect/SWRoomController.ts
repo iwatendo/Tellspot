@@ -35,7 +35,7 @@ export default class SWRoomController implements ISWRoom {
      * 
      * @param stream 
      */
-    public SetStream(stream: any) {
+    public SetStream(stream: MediaStream) {
         this.Room.SetStream(stream);
     }
 
