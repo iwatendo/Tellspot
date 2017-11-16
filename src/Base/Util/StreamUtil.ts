@@ -34,14 +34,25 @@ export default class StreamUtil {
      * @param audioSource 
      * @param callback 
      */
-    private static GetMediaStream(msc: MediaStreamConstraints, callback: OnGetMediaStream) {
+    private static GetMediaStream(msc: MediaStreamConstraints, callback: OnGetMediaStream, retryCount: number = 0) {
 
         navigator.getUserMedia(msc,
             (stream) => {
                 callback(stream);
             }, (err: MediaStreamError) => {
-                LogUtil.Error(null, err.name);
-                LogUtil.Error(null, err.message);
+
+                if (err.name === "TrackStartError" && retryCount < 5) {
+                    retryCount = retryCount + 1;
+                    LogUtil.Warning(null, err.name + " : retry " + retryCount.toString());
+                    //  １秒待ってからリトライ ※5回迄
+                    setTimeout(() => {
+                        this.GetMediaStream(msc, callback, retryCount);
+                    }, 1000);
+                }
+                else {
+                    LogUtil.Error(null, err.name + " : " + err.message);
+                    callback(null);
+                }
             }
         );
     }
@@ -69,7 +80,7 @@ export default class StreamUtil {
     public static GetMediaStreamConstraints_DefaultDevice(): MediaStreamConstraints {
         return { audio: true, video: true };
     }
-    
+
 
     /**
      * モバイル端末のMediaStreamConstraints取得
@@ -107,11 +118,14 @@ export default class StreamUtil {
      */
     public static Stop(stream: MediaStream) {
         if (stream) {
-            if (stream.getVideoTracks().length > 0) {
-                stream.getVideoTracks()[0].stop();
-            }
-            if (stream.getAudioTracks().length > 0) {
-                stream.getAudioTracks()[0].stop();
+            let tracks = stream.getTracks();
+            let count = tracks.length;
+            if (count > 0) {
+                for (let i = count - 1; i >= 0; i--) {
+                    let track: MediaStreamTrack = tracks[i];
+                    track.stop();
+                    stream.removeTrack(track);
+                }
             }
         }
     }

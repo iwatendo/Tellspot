@@ -30,6 +30,7 @@
 
 .sbj-volume-button {
     border-radius: 6px;
+    width: 64px;    
     z-index: 2;
 }
 

@@ -27,9 +27,9 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         StdUtil.StopTouchmove();
 
         let audioElement = document.getElementById('audio') as HTMLAudioElement;
-        let startBotton = document.getElementById('sbj-cast-instance-start');
+        let startBotton = document.getElementById('sbj-cast-instance-start') as HTMLInputElement;
         let stopBotton = document.getElementById('sbj-cast-instance-stop');
-        let camchangeBotton = document.getElementById('sbj-camchange');
+        let camchangeBotton = document.getElementById('sbj-camchange') as HTMLInputElement;
         let volumeOn = document.getElementById("sbj-volume-button-on");
         let volumeOff = document.getElementById("sbj-volume-button-off");
         let sliderDiv = document.getElementById("sbj-volume");
@@ -84,12 +84,30 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
 
         let cam = MobileCam.REAR;
 
+        //  プレビュー表示処理
+        let startPreviewFunc = (cam: MobileCam) => {
+            setTimeout(() => {
+                this.SetStreamPreview(cam, () => {
+                    camchangeBotton.disabled = false;
+                    startBotton.disabled = false;
+                });
+            }, 200);
+        }
+
+        //  カメラ変更ボタン
         camchangeBotton.onclick = (e) => {
-            cam = (cam === MobileCam.REAR ? MobileCam.FRONT : MobileCam.REAR);
-            this.SetStreamPreview(cam);
+            camchangeBotton.disabled = true;
+            startBotton.disabled = true;
+            setTimeout(() => {
+                this.StopStreamPreview();
+                //  リアとフロントのカメラを切替えプレビュー表示
+                cam = (cam === MobileCam.REAR ? MobileCam.FRONT : MobileCam.REAR);
+                startPreviewFunc(cam);
+            }, 200);
         };
 
-        this.SetStreamPreview(MobileCam.REAR);
+        //  起動時はリアカメラでプレビュー表示する
+        startPreviewFunc(MobileCam.REAR);
 
         callback();
     }
@@ -186,25 +204,36 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
     }
 
 
+
+    public StopStreamPreview() {
+
+        let videoElement = document.getElementById('video-preview') as HTMLVideoElement;
+        if (videoElement) videoElement.srcObject = null;
+
+        if (this.Controller.Stream) {
+            StreamUtil.Stop(this.Controller.Stream);
+        }
+    }
+
+
     /**
      * Video/Audioソースの取得とリストへのセット
      */
-    public SetStreamPreview(cam: MobileCam) {
+    public SetStreamPreview(cam: MobileCam, callback) {
 
         let controller = this.Controller;
-
-        if (controller.Stream) {
-            StreamUtil.Stop(controller.Stream);
-        }
-
+        let videoElement = document.getElementById('video-preview') as HTMLVideoElement;
         let msc = StreamUtil.GetMediaStreamConstraints_Mobile(cam, true);
 
-        let videoElement = document.getElementById('video-preview') as HTMLVideoElement;
-
         StreamUtil.GetStreaming(msc, (stream) => {
+
             controller.Stream = stream;
-            if (videoElement) {
+            if (stream && videoElement) {
+                videoElement.onplaying = (e) => { callback(); }
                 StreamUtil.StartPreview(videoElement, stream);
+            }
+            else {
+                callback();
             }
         });
     }
