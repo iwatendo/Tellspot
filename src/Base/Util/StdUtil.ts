@@ -8,6 +8,20 @@ import LinkUtil from "./LinkUtil";
 export default class StdUtil {
 
     /**
+     * mobile端末か判定
+     */
+    public static IsMobile(){
+        let ua = navigator.userAgent;
+        if (ua.indexOf('iPhone') > 0 || ua.indexOf('iPod') > 0 || (ua.indexOf('Android') > 0) && (ua.indexOf('Mobile') > 0) || ua.indexOf('Windows Phone') > 0) {
+            return true;
+        }else if(ua.indexOf('iPad') > 0 || ua.indexOf('Android') > 0){
+            return true;
+        }
+        return false;
+    }
+
+
+    /**
      * 動作するブラウザかチェック
      * ※現状は Google Chromeにのみ対応
      */
