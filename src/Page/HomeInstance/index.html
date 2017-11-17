@@ -4,43 +4,51 @@
 <head>
     <title>Tellspot ～現場から中継お願いします！～</title>
     <meta charset='utf-8'>
-    <link rel="icon" type="image/vnd.microsoft.icon" href="/image/favicon.ico">
-    <script src='/lib/skyway.min.js'></script>
-    <script src='/lib/jquery-2.2.3.min.js'></script>
-    <script src='/lib/jquery.qrcode.min.js'></script>
+    <link rel="icon" type="image/vnd.microsoft.icon" href='../image/favicon.ico'>
+    <script src='../lib/skyway.min.js'></script>
+    <script src='../lib/jquery-2.2.3.min.js'></script>
+    <script src='../lib/jquery.qrcode.min.js'></script>
     <script src="https://maps.google.com/maps/api/js?key={googlemap}"></script>
-    <script src='/lib/gmaps.min.js'></script>
-    <link rel='stylesheet' href='/lib/material.min.css' />
+    <script src='../lib/gmaps.min.js'></script>
+    <link rel='stylesheet' href='../lib/material.min.css' />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel='stylesheet' href='../common.css?v={version}' />
     <link rel='stylesheet' href='style.css?v={version}' />
-    <script src="/lib/material.min.js"></script>
+    <script src='../lib/material.min.js'></script>
 </head>
 
 <body>
     <div class="mdl-layout mdl-js-layout">
         <main class="mdl-layout__content">
             <div class="mdl-grid sbj-max-width">
-                <div class="mdl-grid mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
+                <div id="top-cell" class="mdl-grid mdl-cell mdl-cell--12-col mdl-card">
                     <div class="mdl-cell mdl-cell--8-col">
-                        <h2 class="mdl-card__title-text">Tellspot ～現場から中継お願いします！～</h2>
+                        <h1 class="mdl-card__title-text">～現場から中継お願いします！～</h1>
+                        <div class="mdl-card__supporting-text no-left-padding">
+                            パソコンとスマホ（またはタブレット）で、ビデオ通話ができるサービスです。
+                            <br/>ビデオ通話と同時に、スマホ/タブレットの位置をGoogleMapで表示します。
+                        </div>
                         <div class="mdl-card__supporting-text padding-top">
-                            <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+                            <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                                 &nbsp; 接続URLをクリップボードにコピー &nbsp;
                             </button>
                         </div>
                         <div class="mdl-card__supporting-text no-left-padding">
-                            接続URLまたはQRコードにアクセスするだけで
-                            <br/>スマートフォンやタブレットから現場中継ができるサービスです
+                            <b>利用方法</b>
+                            <br/>・接続URLをビデオ通話したい相手にメールやSNSで伝えます。
+                            <br/>・スマホ/タブレット側で「開始」ボタンでビデオ通話が始まります。
                             <br/>
-                            <br/>　・iOS11 / Android7.1.1 以降の端末に対応しています。
-                            <br/>　・近くで利用する場合はハウリングに注意してください。
-                            <br/>　・接続URLは毎回変更されます。
-                            <br/>　・WebRTC(
-                            <a class="skyway-link" href="https://webrtc.ecl.ntt.com/" target="_blank">SkyWay</a>)を利用したサービスです。
                             <br/>
-                            <br/> GitHub:
-                            <a href="https://github.com/iwatendo/Tellspot" target="_blank">Tellspot</a>
+                            <b>とりあえず試してみたい場合</b>
+                            <br/>・右のQRコードを、スマホ/タブレットで読み込んでみてください。
+                            <br/>・近くで利用する場合はハウリングに注意してください。
+                            <br/>
+                            <br/>
+                            <b>注意事項</b>
+                            <br/>・スマホ/タブレット側は、接続時ミュート状態になっています。
+                            <br/>・パソコン側の音声を聴く場合は、スピーカーボタンでミュート解除します。
+                            <br/>・接続URLは毎回変更されます。再利用できません。
+                            <br/>・ブラウザを閉じたりリロードすると、前回のURLには接続できなくなります。
                         </div>
                     </div>
                     <div class="mdl-cell mdl-cell--12-col-tablet">
@@ -49,14 +57,42 @@
                             </div>
                         </div>
                     </div>
+                    <!--
                 </div>
-                <div id="map-cell" class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp" hidden>
+                <div id="about-cell" class="mdl-grid mdl-cell mdl-cell--12-col mdl-card"> -->
+                    <div class="mdl-cell mdl-cell--6-col">
+                        <div class="mdl-card__supporting-text no-left-padding">
+                            <b>パソコン側の対応ブラウザ</b>
+                            <br/>・Googole Chrome（バージョン59以降)　※推奨
+                            <br/>・Safari(バージョン11以降）
+                            <br/>※Safariの場合、Androidと接続できない場合があります。
+                            <br/>
+                            <br/>
+                            <b>モバイル端末側の対応OS</b>
+                            <br/>・Android7.1.1 以降のスマートフォン/タブレット。
+                            <br/>・iOS11以降のiPhoneまたはiPad
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--6-col">
+                        <div class="mdl-card__supporting-text no-left-padding">
+                            <b>本サービス(Tellspot)について</b>
+                            <br/>・WebRTC(<a href="https://webrtc.ecl.ntt.com/" target="_blank">SkyWay</a>)を使用しています。
+                            <br/>・プログラムは<a href="https://github.com/iwatendo/Tellspot" target="_blank">GitHub:Tellspot</a>に公開しています。
+                            <br/>・予告なしに仕様変更する場合があります。
+                        </div>
+                    </div>
+                </div>
+
+                <div id="map-cell" class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--2dp" hidden>
                     <div class="map" id="map"></div>
                 </div>
-                <div id="livecast-cell" class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp" hidden>
+                <div id="livecast-cell" class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--2dp" hidden>
                     <iframe class="livecast" id="livecast"></iframe>
                 </div>
-                <div id="setting-cell" class="mdl-grid mdl-cell mdl-cell--12-col mdl-card mdl-shadow--4dp">
+                <div id="setting-cell" class="mdl-grid mdl-cell mdl-cell--12-col mdl-card mdl-shadow--2dp">
+                    <div class="mdl-cell mdl-cell--12-col">
+                        <h6 class="sbj-device-select-title">ビデオ通話に使用するデバイス</h6>
+                    </div>
                     <div class="mdl-cell mdl-cell--6-col">
                         <div class="sbj-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="camera-select-div">
                             <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="camera-select" />
@@ -84,9 +120,9 @@
     <input id="select-audio-device" type="text" hidden/>
     </div>
 
-    <script src="/lib/react.min.js"></script>
-    <script src="/lib/react-dom.min.js"></script>
-    <script src="bundle.js?v={version}"></script>
+    <script src='../lib/react.min.js'></script>
+    <script src='../lib/react-dom.min.js'></script>
+    <script src='bundle.js?v={version}'></script>
 
 </body>
 

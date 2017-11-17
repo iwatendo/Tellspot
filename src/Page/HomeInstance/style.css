@@ -21,9 +21,26 @@
   height: 600px;
 }
 
-.skyway-link{
+a{
   color: #0099ff;
   font-weight: 1000;
+}
+
+.sbj-device{
+  padding: 16px;
+}
+
+.sbj-device-select{
+  width: 400px;
+}
+
+.sbj-device-select-title{
+  margin: 0px;    
+}
+
+#setting-cell{
+  overflow: visible;
+  min-height: 104px;
 }
 
 /*-----------------------------
@@ -69,16 +86,3 @@
     border-right:16px solid transparent;
     border-bottom:16px solid #336699;
   }
-
-.sbj-device{
-  padding: 16px;
-}
-
-.sbj-device-select{
-  width: 400px;
-}
-
-#setting-cell{
-  overflow: visible;
-  min-height: 104px;
-}

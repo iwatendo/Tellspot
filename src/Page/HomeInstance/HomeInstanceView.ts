@@ -47,6 +47,7 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
 
 
     public ChnageDisplayMode(isLive: boolean) {
+        document.getElementById('top-cell').hidden = isLive;
         document.getElementById('setting-cell').hidden = isLive;
         document.getElementById('livecast-cell').hidden = !isLive;
         document.getElementById('map-cell').hidden = !isLive;
