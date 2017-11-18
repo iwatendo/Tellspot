@@ -32,16 +32,16 @@ body {
     margin: 8px;
     padding: 8px;
     border: 8px;
-    color: var(--sbj-color-highlight-text);
-    text-shadow: -1px -1px 0 var(--sbj-color-default-text);
+    color: whitesmoke;
+    text-shadow: -1px -1px 0 #555;
     font-size: 32px;
-    background-color: var(--sbj-color-edge-background);
+    background-color: rgba(0,0,0,.3);
 }
 
 #sbj-video {
     height: 100%;
     width: 100%;
-    background-color: var(--sbj-color-edge-background);
+    background-color: rgba(0,0,0,.3);
 }
 
 #sbj-cact-visitor-item-port #sbj-cact-visitor-cursor-port {
@@ -74,13 +74,13 @@ body {
     right: 0px;
     bottom : 0px;
     height: 52px;
-    background-color: var(--sbj-color-default-text);
+    background-color: #555;
     opacity: 0.0;
 }
 
 .sbj-cact-visitor-button {
     position: absolute;
-    background-color: var(--sbj-color-timeline-panel);
+    background-color: rgba(255,255,255,.3);
     border-radius: 6px;
 }
 
