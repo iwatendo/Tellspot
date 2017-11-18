@@ -7,6 +7,7 @@ import CastInstanceController from "./CastInstanceController";
 import { MapLocationSender } from "../HomeInstance/HomeInstanceContainer";
 import SWRoomController from "../../Base/Common/Connect/SWRoomController";
 import LinkUtil from "../../Base/Util/LinkUtil";
+import SWPeer from "../../Base/Common/Connect/SWPeer";
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
 
@@ -228,13 +229,23 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         StreamUtil.GetStreaming(msc, (stream) => {
 
             controller.Stream = stream;
-            if (stream && videoElement) {
-                videoElement.onplaying = (e) => { callback(); }
-                StreamUtil.StartPreview(videoElement, stream);
+
+            if (stream === null) {
+                this.StreamErrorClose();
+                return;
             }
-            else {
-                callback();
-            }
+
+            //  ストリームの取得に成功した後にPeer接続を開始する
+            controller.InitilizePeer(() => {
+                if (stream && videoElement) {
+                    videoElement.onplaying = (e) => { callback(); }
+                    StreamUtil.StartPreview(videoElement, stream);
+                }
+                else {
+                    callback();
+                }
+            });
+
         });
     }
 
@@ -246,7 +257,7 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
     public SetMediaStream(peerid: string, stream: MediaStream, isAlive: boolean) {
         CastInstanceView._mediaStream = stream;
 
-        let videoRecv = document.getElementById('video-reciver') as HTMLVideoElement;
+        let videoRecv = document.getElementById('video-receiver') as HTMLVideoElement;
         videoRecv.srcObject = stream;
 
         (document.getElementById("sbj-volume-button-on") as HTMLInputElement).disabled = false;
@@ -293,6 +304,17 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
             errorEelement.innerText = message;
         }
 
+    }
+
+
+    /**
+     * ストリームが取得できなかった場合、メッセージ表示して終了する
+     */
+    public StreamErrorClose() {
+        document.getElementById('video-preview').hidden = true;
+        document.getElementById('video-receiver').hidden = true;
+        document.getElementById('sbj-cast-instance-stream-error').hidden = false;
+        this.Controller.SwPeer.Close();
     }
 
 

@@ -13,6 +13,7 @@ import { CastInstanceReceiver } from "./CastInstanceReceiver";
 import StreamUtil from "../../Base/Util/StreamUtil";
 import SWRoomController from "../../Base/Common/Connect/SWRoomController";
 import { SWRoomMode } from "../../Base/Common/Connect/SWRoom";
+import SWPeer from "../../Base/Common/Connect/SWPeer";
 
 
 export default class CastInstanceController extends AbstractServiceController<CastInstanceView, CastInstanceModel> {
@@ -36,7 +37,22 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     };
 
 
-    private _peerid: string = null;
+    /**
+     * Peer接続の初期化処理
+     * @param stream 
+     * @param callback 
+     */
+    public InitilizePeer(callback) {
+        if (this.SwPeer) {
+            //  初期化済みの場合は何もしない
+            callback();
+        }
+        else {
+            this.SwPeer = new SWPeer(this, LinkUtil.GetPeerID(), () => {
+                callback();
+            });
+        }
+    }
 
 
     /**
@@ -44,7 +60,6 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      * @param peer
      */
     public OnPeerOpen(peer: PeerJs.Peer) {
-        this._peerid = peer.id;
     }
 
     /**
@@ -63,7 +78,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
     public OnOwnerConnection() {
         this.CastInstance = new CastInstanceSender(CastTypeEnum.LiveCast);
         this.CastInstance.instanceUrl = location.href;
-        this.CastInstance.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this._peerid);
+        this.CastInstance.clientUrl = LinkUtil.CreateLink('../CastVisitor/index.html', this.SwPeer.PeerId);
         this.SwPeer.SendToOwner(this.CastInstance);
     }
 
@@ -102,7 +117,7 @@ export default class CastInstanceController extends AbstractServiceController<Ca
      * ストリーミングの開始
      */
     public StartStreaming() {
-        this.SwRoomController = new SWRoomController(this.SwPeer, this.SwPeer.PeerId, SWRoomMode.Mesh, this.View.SetMediaStream,this.Stream);
+        this.SwRoomController = new SWRoomController(this.SwPeer, this.SwPeer.PeerId, SWRoomMode.Mesh, this.View.SetMediaStream, this.Stream);
         this.ServerSend(true, false);
     }
 

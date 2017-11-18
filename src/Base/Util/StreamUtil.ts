@@ -30,31 +30,43 @@ export default class StreamUtil {
 
     /**
      * メディア
-     * @param videoSource 
-     * @param audioSource 
-     * @param callback 
+     * @param videoSource
+     * @param audioSource
+     * @param callback
      */
     private static GetMediaStream(msc: MediaStreamConstraints, callback: OnGetMediaStream, retryCount: number = 0) {
 
-        navigator.getUserMedia(msc,
-            (stream) => {
+        try {
+
+            let p = navigator.mediaDevices.getUserMedia(msc);
+
+            p.then((stream) => {
                 callback(stream);
-            }, (err: MediaStreamError) => {
+            });
+
+            p.catch((err: MediaStreamError) => {
+
+                let errmsg = err.name + "\n" + err.message;
 
                 if (err.name === "TrackStartError" && retryCount < 5) {
                     retryCount = retryCount + 1;
-                    LogUtil.Warning(null, err.name + " : retry " + retryCount.toString());
+                    LogUtil.Warning(null, errmsg + "/n retry " + retryCount.toString());
                     //  １秒待ってからリトライ ※5回迄
                     setTimeout(() => {
                         this.GetMediaStream(msc, callback, retryCount);
                     }, 1000);
                 }
                 else {
-                    LogUtil.Error(null, err.name + " : " + err.message);
+                    LogUtil.Error(null, errmsg);
                     callback(null);
                 }
-            }
-        );
+            });
+
+        }
+        catch (err) {
+            LogUtil.Error(null, err);
+            callback(null);
+        }
     }
 
 

@@ -21,7 +21,7 @@
 
             <audio id='audio' autoplay="true" hidden></audio>
             <video id='video-preview' autoplay="true" playsinline="true" muted></video>
-            <video id='video-reciver' autoplay="true" playsinline="true" muted></video>
+            <video id='video-receiver' autoplay="true" playsinline="true" muted></video>
             
             <div id="sbj-actions" class="sbj-actions mdl-card__actions">
                 <button id="sbj-volume-button-on" class="sbj-volume-button mdl-button mdl-js-button mdl-button--raised mdl-button--icon mdl-button--colored" hidden disabled>
@@ -46,7 +46,17 @@
                     &nbsp;終了&nbsp;
                 </button>
             </div>
-
+            
+            <div id="sbj-cast-instance-stream-error" class="mdl-card__supporting-text" hidden>
+                <h5>
+                    カメラ及びマイクへの接続に失敗しました。
+                    <br/>
+                    <br/>アプリ内のブラウザから開いた場合は、標準ブラウザから開き直してください。
+                    <br/>
+                    <br/>通常であればアプリ内のブラウザから、標準ブラウザを起動できます。
+                </h5>
+            </div>
+            
         </main>
 
         <main id="sbj-cast-instance-disconnect" class="sbj-cast-instance-disconnect mdl-color-text--grey-600" hidden>
