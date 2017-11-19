@@ -99,13 +99,20 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
      */
     public NotifyServent(sl: ServentLocation) {
 
-        GMapsUtil.GetAddress(sl.Locate, (name) => {
+        let frame = document.getElementById('livecast') as HTMLIFrameElement;
+        
+        if(sl.Locate.permission){
+            GMapsUtil.GetAddress(sl.Locate, (name) => {
+                this.ChnageDisplayMode(true);
+                GMapsUtil.CreateMap('#map', sl.Locate);
+                frame.src = sl.Servent.clientUrl;
+                this.SetLocation(sl.Locate);
+            });       
+        }
+        else{
             this.ChnageDisplayMode(true);
-            GMapsUtil.CreateMap('#map', sl.Locate);
-            let frame = document.getElementById('livecast') as HTMLIFrameElement;
             frame.src = sl.Servent.clientUrl;
-            this.SetLocation(sl.Locate);
-        });
+        }
     }
 
 
@@ -114,7 +121,9 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
      * @param locate 
      */
     public SetLocation(locate: MapPos) {
-        GMapsUtil.DrawOverlay(locate, '<div class="overlay">中継現場<div class="overlay_arrow above"></div></div>');
+        if (locate.permission) {
+            GMapsUtil.DrawOverlay(locate, '<div class="overlay">中継現場<div class="overlay_arrow above"></div></div>');
+        }
     }
 
     /**

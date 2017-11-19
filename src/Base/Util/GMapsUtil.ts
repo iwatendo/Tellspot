@@ -3,6 +3,14 @@ declare var google: any;
 declare var GMaps: any;
 
 export class MapPos {
+
+    constractor(){
+        this.permission = false;
+        this.latitude = -1;
+        this.longitude = -1;
+    }
+
+    permission: boolean;
     latitude: number;
     longitude: number;
 }
@@ -71,11 +79,25 @@ export default class GMapsUtil {
         GMaps.geolocate({
             success: (position) => {
                 let result = new MapPos();
+                result.permission = true;
                 result.latitude = position.coords.latitude;
                 result.longitude = position.coords.longitude;
                 callback(result);
             },
-            error: (error) => { this.Error('位置情報の取得に失敗しました : ' + error.message); },
+            error: (error: PositionError) => {
+
+                //  位置情報の取得を拒否した場合
+                if (error.code === error.PERMISSION_DENIED) {
+                    let result = new MapPos();
+                    result.permission = false;
+                    result.latitude = 0;
+                    result.longitude = 0;
+                    callback(result);
+                }
+                else {
+                    this.Error('位置情報の取得に失敗しました : ' + error.message);
+                }
+            },
             not_supported: () => { this.Error("位置情報の取得に対応していないブラウザまたは端末です"); },
             always: () => {
             }
