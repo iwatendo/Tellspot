@@ -26,6 +26,9 @@ export default class CastInstanceView extends AbstractServiceView<CastInstanceCo
         (window as any).AudioContext = (window as any).AudioContext || (window as any).webkitAudioContext;
         StdUtil.StopPropagation();
         StdUtil.StopTouchmove();
+        //  MobileSafariの場合に、受信した映像を表示しているVideoタグが枠外にはみ出た場合にフリーズする問題あり
+        //  暫定対策としてズームを禁止にする。
+        StdUtil.StopTouchZoom();
 
         let audioElement = document.getElementById('audio') as HTMLAudioElement;
         let startBotton = document.getElementById('sbj-cast-instance-start') as HTMLInputElement;

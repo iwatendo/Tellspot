@@ -10,11 +10,11 @@ export default class StdUtil {
     /**
      * mobile端末か判定
      */
-    public static IsMobile(){
+    public static IsMobile() {
         let ua = navigator.userAgent;
         if (ua.indexOf('iPhone') > 0 || ua.indexOf('iPod') > 0 || (ua.indexOf('Android') > 0) && (ua.indexOf('Mobile') > 0) || ua.indexOf('Windows Phone') > 0) {
             return true;
-        }else if(ua.indexOf('iPad') > 0 || ua.indexOf('Android') > 0){
+        } else if (ua.indexOf('iPad') > 0 || ua.indexOf('Android') > 0) {
             return true;
         }
         return false;
@@ -258,12 +258,6 @@ export default class StdUtil {
             return;
         }
 
-        if (window.addEventListener) {
-            function TouchEventFunc(e) { }
-            // タッチしたまま平行移動すると実行されるイベント
-            document.addEventListener("touchmove", TouchEventFunc);
-        }
-
         //  PullToRefresh対策
         //  http://qiita.com/sundaycrafts/items/5ad6bbea8800ad3d764b
         //  http://elsur.xyz/android-preventdefault-error
@@ -308,8 +302,42 @@ export default class StdUtil {
 
         document.addEventListener('touchstart', preventPullToRefresh.touchstartHandler);
         document.addEventListener('touchmove', preventPullToRefresh.touchmoveHandler);
+    }
+
+
+    /**
+     * タッチでのズームを禁止します
+     * ※Safariにのみに適用されます。Androidでは無効化できません。
+     */
+    public static StopTouchZoom() {
+
+        //  ピッチイン、ピッチアウトによる拡大縮小を禁止
+        document.documentElement.addEventListener('touchstart', (te: TouchEvent) => {
+
+            let el = te.srcElement;
+
+            //  ビデオエレメントのタッチは無条件にキャンセル
+            if (el && el instanceof HTMLVideoElement) {
+                te.preventDefault();
+            }
+
+            if (te.touches.length > 1) {
+                event.preventDefault();
+            }
+
+        }, false);
+
+        var lastTouchEnd = 0;
+        document.documentElement.addEventListener('touchend', (te: TouchEvent) => {
+            var now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
 
     }
+
 
 
     /**
@@ -318,12 +346,12 @@ export default class StdUtil {
      */
     public static ClipBoardCopy(text: string): boolean {
 
-        var element : HTMLTextAreaElement = document.createElement('textarea');
+        var element: HTMLTextAreaElement = document.createElement('textarea');
 
         element.value = text;
         element.selectionStart = 0;
         element.selectionEnd = element.value.length;
-        
+
         var s = element.style;
         s.position = 'fixed';
         s.left = '-100%';
