@@ -27,7 +27,9 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
      */
     public SetCastInstanceUrl(peerid: string) {
 
-        let linkUrl = LinkUtil.CreateLink("../CastInstance/", peerid);
+        //  URL短縮の為にトップページでCastInstanceにリダイレクトします
+        //  let linkUrl = LinkUtil.CreateLink("../CastInstance/", peerid);
+        let linkUrl = LinkUtil.CreateLink("../", peerid);
 
         var qrcode: any = $('#qrcode');
         qrcode.qrcode(linkUrl);

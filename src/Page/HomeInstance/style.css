@@ -38,6 +38,10 @@ a{
   margin: 0px;    
 }
 
+.sbj-warning-message{
+  color: #FF0033;
+}
+
 #setting-cell{
   overflow: visible;
   min-height: 104px;

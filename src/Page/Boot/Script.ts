@@ -1,3 +1,10 @@
 ﻿import LinkUtil from "../../Base/Util/LinkUtil";
 
-window.location.href = LinkUtil.CreateLink("homeinstance/");
+let pid = LinkUtil.GetPeerID();
+
+if (pid) {
+    window.location.href = LinkUtil.CreateLink("CastInstance/", pid);
+}
+else {
+    window.location.href = LinkUtil.CreateLink("HomeInstance/");
+}
