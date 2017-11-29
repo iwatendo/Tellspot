@@ -4,8 +4,8 @@ import { IServiceController } from "./IServiceController";
 import { IServiceReceiver } from "./IServiceReceiver";
 import { IServiceView } from "./IServiceView";
 import { IServiceModel } from "./IServiceModel";
-import SWPeer from "./Connect/SWPeer";
-import SWRoomController from "./Connect/SWRoomController";
+import SWPeer from "../WebRTC/SWPeer";
+import SWRoomController from "../WebRTC/SWRoomController";
 
 /**
  * Peerサービスコントローラーの抽象化クラス

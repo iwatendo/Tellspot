@@ -1,9 +1,9 @@
 ﻿import StdUtil from "../../Base/Util/StdUtil";
 import LinkUtil from "../../Base/Util/LinkUtil";
 import StreamUtil from "../../Base/Util/StreamUtil";
-import SWPeer from "../../Base/Common/Connect/SWPeer";
-import SWRoomController from "../../Base/Common/Connect/SWRoomController";
-import { SWRoomMode } from "../../Base/Common/Connect/SWRoom";
+import SWPeer from "../../Base/WebRTC/SWPeer";
+import SWRoomController from "../../Base/WebRTC/SWRoomController";
+import { SWRoomMode } from "../../Base/WebRTC/SWRoom";
 
 import CastVisitorController from "./CastVisitorController";
 

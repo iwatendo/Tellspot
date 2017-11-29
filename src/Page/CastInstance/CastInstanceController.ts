@@ -11,9 +11,9 @@ import CastInstanceModel from "./CastInstanceModel";
 import CastInstanceView from "./CastInstanceView";
 import { CastInstanceReceiver } from "./CastInstanceReceiver";
 import StreamUtil from "../../Base/Util/StreamUtil";
-import SWRoomController from "../../Base/Common/Connect/SWRoomController";
-import { SWRoomMode } from "../../Base/Common/Connect/SWRoom";
-import SWPeer from "../../Base/Common/Connect/SWPeer";
+import SWRoomController from "../../Base/WebRTC/SWRoomController";
+import { SWRoomMode } from "../../Base/WebRTC/SWRoom";
+import SWPeer from "../../Base/WebRTC/SWPeer";
 
 
 export default class CastInstanceController extends AbstractServiceController<CastInstanceView, CastInstanceModel> {

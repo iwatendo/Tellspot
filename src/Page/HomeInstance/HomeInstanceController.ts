@@ -9,7 +9,7 @@ import HomeInstanceView from "./HomeInstanceView";
 import HomeInstanceModel from "./HomeInstanceModel";
 import { MapPos } from "../../Base/Util/GMapsUtil";
 import CastInstanceSender from "../../Base/Container/CastInstanceSender";
-import SWPeer from "../../Base/Common/Connect/SWPeer";
+import SWPeer from "../../Base/WebRTC/SWPeer";
 
 
 /**

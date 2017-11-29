@@ -2,7 +2,7 @@
 import LinkUtil from "../../Base/Util/LinkUtil";
 import LocalCache from "../../Base/Common/LocalCache";
 import CastInstanceController from "./CastInstanceController";
-import SWPeer from "../../Base/Common/Connect/SWPeer";
+import SWPeer from "../../Base/WebRTC/SWPeer";
 
 if (StdUtil.IsExecute(true)) {
 

@@ -5,9 +5,9 @@ import StreamUtil, { MobileCam } from "../../Base/Util/StreamUtil";
 
 import CastInstanceController from "./CastInstanceController";
 import { MapLocationSender } from "../HomeInstance/HomeInstanceContainer";
-import SWRoomController from "../../Base/Common/Connect/SWRoomController";
+import SWRoomController from "../../Base/WebRTC/SWRoomController";
 import LinkUtil from "../../Base/Util/LinkUtil";
-import SWPeer from "../../Base/Common/Connect/SWPeer";
+import SWPeer from "../../Base/WebRTC/SWPeer";
 
 export default class CastInstanceView extends AbstractServiceView<CastInstanceController> {
 
