@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ja-jp">
+
+<head>
+    <title>Tellspot</title>
+    <meta charset='utf-8'>
+    <link rel="icon" type="image/vnd.microsoft.icon" href='../image/favicon.ico'>
+    <script src='../lib/skyway.js'></script>
+    <script src='../lib/jquery-2.2.3.min.js'></script>
+    <script src='../lib/jquery.qrcode.min.js'></script>
+    <script src="https://maps.google.com/maps/api/js?key={googlemap}"></script>
+    <script src='../lib/gmaps.min.js'></script>
+    <link rel='stylesheet' href='../lib/material.min.css' />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel='stylesheet' href='../common.css?v={version}' />
+    <link rel='stylesheet' href='style.css?v={version}' />
+    <script src='../lib/material.min.js'></script>
+</head>
+
+<body>
+    <div class="mdl-layout mdl-js-layout">
+        <main class="mdl-layout__content">
+            <div class="mdl-grid sbj-max-width">
+                <div id="top-cell" class="mdl-grid mdl-cell mdl-cell--12-col mdl-card">
+                    <div class="mdl-card__supporting-text padding-top">
+                        <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                            &nbsp; 接続URLをクリップボードにコピー &nbsp;
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src='../lib/react.min.js'></script>
+    <script src='../lib/react-dom.min.js'></script>
+    <script src='bundle.js?v={version}'></script>
+
+</body>
+
+</html>

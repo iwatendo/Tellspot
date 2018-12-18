@@ -2,7 +2,7 @@
 <html lang="ja-jp">
 
 <head>
-    <title>Tellspot ～現場から中継お願いします！～</title>
+    <title>Tellspot</title>
     <meta charset='utf-8'>
     <link rel="icon" type="image/vnd.microsoft.icon" href='../image/favicon.ico'>
     <script src='../lib/skyway.js'></script>
@@ -22,70 +22,26 @@
         <main class="mdl-layout__content">
             <div class="mdl-grid sbj-max-width">
                 <div id="top-cell" class="mdl-grid mdl-cell mdl-cell--12-col mdl-card">
-                    <div class="mdl-cell mdl-cell--8-col">
-                        <h1 class="mdl-card__title-text">～現場から中継お願いします！～</h1>
-                        <div class="mdl-card__supporting-text no-left-padding">
-                            パソコンとスマホ（またはタブレット）で、ビデオ通話ができるサービスです。
-                            <br/>ビデオ通話と同時に、スマホ/タブレットの位置をGoogleMapで表示します。
-                            <br/>
-                            <br/><b>WebRTCのiPhone(Safari)対応の検証用に作ったサービスです。</b>
-                            <br/>
-                            <br/><b>現バージョンは<a href="https://support.skyway.io/hc/ja/articles/236202427" target="_blank" class="sbj-warning-message">iPhone/iPadがフリーズする可能性</a>があります。</b>
-                            <br/><b>フリーズの契機となる動作ができないように制限を入れていますが</b>
-                            <br/><b>ご利用の際は注意してください。</b>
-                        </div>
-                        <div class="mdl-card__supporting-text padding-top">
-                            <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                                &nbsp; 接続URLをクリップボードにコピー &nbsp;
-                            </button>
-                        </div>
-                        <div class="mdl-card__supporting-text no-left-padding">
-                            <b>利用方法</b>
-                            <br/>・接続URLをビデオ通話したい相手にメールやSNSで伝えます。
-                            <br/>・スマホ/タブレット側で「開始」ボタンでビデオ通話が始まります。
-                            <br/>
-                            <br/>
-                            <b>とりあえず試してみたい場合</b>
-                            <br/>・右のQRコードを、スマホ/タブレットで読み込んでみてください。
-                            <br/>・近くで利用する場合はハウリングに注意してください。
-                            <br/>
-                            <br/>
-                            <b>注意事項</b>
-                            <br/>・パソコン側もカメラとマイクが接続されている必要があります。
-                            <br/>・スマホ/タブレット側は、接続時ミュート状態になっています。
-                            <br/>・接続URLは毎回変更されます。再利用できません。
-                            <br/>・ブラウザを閉じたりリロードすると、前回のURLには接続できなくなります。
-                        </div>
+                    <div class="mdl-card__supporting-text padding-top">
+                        <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                            &nbsp; 接続URLをクリップボードにコピー &nbsp;
+                        </button>
                     </div>
-                    <div class="mdl-cell mdl-cell--12-col-tablet">
+                    <div class="mdl-cell mdl-cell--6-col">
+                        <h4>スマートフォンからの接続用</h4>
                         <div class="qrbase">
                             <div class="qrcode" id="qrcode">
                             </div>
                         </div>
                     </div>
                     <div class="mdl-cell mdl-cell--6-col">
-                        <div class="mdl-card__supporting-text no-left-padding">
-                            <b>パソコン側の対応ブラウザ</b>
-                            <br/>・Googole Chrome（バージョン59以降)　※推奨
-                            <br/>・Safari(バージョン11以降）
-                            <br/>※Safariの場合、Androidと接続できない場合があります。
-                            <br/>
-                            <br/>
-                            <b>モバイル端末側の対応OS</b>
-                            <br/>・Android7.1.1 以降のスマートフォン/タブレット。
-                            <br/>・iOS11.1.1 以降のiPhoneまたはiPad
-                        </div>
-                    </div>
-                    <div class="mdl-cell mdl-cell--6-col">
-                        <div class="mdl-card__supporting-text no-left-padding">
-                            <b>本サービスについて</b>
-                            <br/>・WebRTC(<a href="https://webrtc.ecl.ntt.com/" target="_blank">SkyWay</a>)を使用しています。
-                            <br/>・<a href="https://github.com/iwatendo/Tellspot" target="_blank">GitHub:Tellspot</a>に公開しています。
-                            <br/>・予告なしに仕様変更する場合があります。
+                        <h4>URLコピー用</h4>
+                        <div class="qrbase">
+                            <div class="qrcode" id="qrcode-copy">
+                            </div>
                         </div>
                     </div>
                 </div>
-
                 <div id="map-cell" class="mdl-cell mdl-cell--12-col mdl-card mdl-shadow--2dp" hidden>
                     <div class="map" id="map"></div>
                 </div>

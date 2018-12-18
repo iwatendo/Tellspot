@@ -30,9 +30,13 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
         //  URL短縮の為にトップページでCastInstanceにリダイレクトします
         //  let linkUrl = LinkUtil.CreateLink("../CastInstance/", peerid);
         let linkUrl = LinkUtil.CreateLink("../", peerid);
+        let copyLinkUrl = LinkUtil.CreateLink("../CopyLink", peerid);
 
         var qrcode: any = $('#qrcode');
         qrcode.qrcode(linkUrl);
+
+        var qrcode_copy: any = $('#qrcode-copy');
+        qrcode_copy.qrcode(copyLinkUrl);
 
         let clipcopybtn = document.getElementById('sbj-linkcopy') as HTMLInputElement;
         clipcopybtn.onclick = (e) => {
@@ -100,16 +104,16 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
     public NotifyServent(sl: ServentLocation) {
 
         let frame = document.getElementById('livecast') as HTMLIFrameElement;
-        
-        if(sl.Locate.permission){
+
+        if (sl.Locate.permission) {
             GMapsUtil.GetAddress(sl.Locate, (name) => {
                 this.ChnageDisplayMode(true);
                 GMapsUtil.CreateMap('#map', sl.Locate);
                 frame.src = sl.Servent.clientUrl;
                 this.SetLocation(sl.Locate);
-            });       
+            });
         }
-        else{
+        else {
             this.ChnageDisplayMode(true);
             frame.src = sl.Servent.clientUrl;
         }

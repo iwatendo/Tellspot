@@ -3,6 +3,7 @@ module.exports = {
     boot: './src/Page/Boot/Script.ts',
     errorpage: './src/Page/ErrorPage/Script.ts',
     homeinstance: './src/Page/HomeInstance/Script.ts',
+    copylink: './src/Page/CopyLink/Script.ts',
     castinstance: './src/Page/CastInstance/Script.ts',
     castvisitor: './src/Page/CastVisitor/Script.ts',
   },
