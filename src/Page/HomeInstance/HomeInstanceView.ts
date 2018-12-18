@@ -126,7 +126,7 @@ export default class HomeInstanceView extends AbstractServiceView<HomeInstanceCo
      */
     public SetLocation(locate: MapPos) {
         if (locate.permission) {
-            GMapsUtil.DrawOverlay(locate, '<div class="overlay">中継現場<div class="overlay_arrow above"></div></div>');
+            GMapsUtil.DrawOverlay(locate, '<div class="overlay">現在位置<div class="overlay_arrow above"></div></div>');
         }
     }
 

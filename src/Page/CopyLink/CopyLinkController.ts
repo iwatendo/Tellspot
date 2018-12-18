@@ -19,7 +19,9 @@ export default class CopyLinkController extends AbstractServiceController<CopyLi
      */
     constructor() {
         super();
-        this.View = new CopyLinkView(this, () => { });
+        this.View = new CopyLinkView(this, () => {
+
+        });
     };
 
 };

@@ -314,7 +314,7 @@ export default class StdUtil {
         //  ピッチイン、ピッチアウトによる拡大縮小を禁止
         document.documentElement.addEventListener('touchstart', (te: TouchEvent) => {
 
-            let el = te.srcElement;
+            const el = te.srcElement;
 
             //  ビデオエレメントのタッチは無条件にキャンセル
             if (el && el instanceof HTMLVideoElement) {
@@ -327,9 +327,9 @@ export default class StdUtil {
 
         }, false);
 
-        var lastTouchEnd = 0;
+        let lastTouchEnd = 0;
         document.documentElement.addEventListener('touchend', (te: TouchEvent) => {
-            var now = (new Date()).getTime();
+            const now = (new Date()).getTime();
             if (now - lastTouchEnd <= 300) {
                 event.preventDefault();
             }
@@ -366,4 +366,24 @@ export default class StdUtil {
         return result;
     }
 
+    public static ClipBoardCopy2(textVal) {
+        // テキストエリアを用意する
+        var copyFrom = document.createElement("textarea");
+        // テキストエリアへ値をセット
+        copyFrom.textContent = textVal;
+
+        // bodyタグの要素を取得
+        var bodyElm = document.getElementsByTagName("body")[0];
+        // 子要素にテキストエリアを配置
+        bodyElm.appendChild(copyFrom);
+
+        // テキストエリアの値を選択
+        copyFrom.select();
+        // コピーコマンド発行
+        var retVal = document.execCommand('copy');
+        // 追加テキストエリアを削除
+        bodyElm.removeChild(copyFrom);
+        // 処理結果を返却
+        return retVal;
+    }
 }

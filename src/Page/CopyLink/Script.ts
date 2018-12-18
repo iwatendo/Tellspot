@@ -1,8 +1,8 @@
 import StdUtil from "../../Base/Util/StdUtil";
-
 import HomeInstanceController from "./CopyLinkController";
-import SWPeer from "../../Base/WebRTC/SWPeer";
+
+let controller : HomeInstanceController;
 
 if (StdUtil.IsExecute()) {
-    let controller = new HomeInstanceController();
+    controller = new HomeInstanceController();
 }
