@@ -21,21 +21,22 @@
     <div class="mdl-layout mdl-js-layout">
         <main class="mdl-layout__content">
             <div class="mdl-grid sbj-max-width">
+                <h3 class="title">パソコンとスマホでビデオ通話（＋GoogleMap連動）</h3>
                 <div id="top-cell" class="mdl-grid mdl-cell mdl-cell--12-col mdl-card">
-                    <div class="mdl-card__supporting-text padding-top">
+                    <div class="mdl-card__supporting-text padding-top" hidden>
                         <button id='sbj-linkcopy' class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
                             &nbsp; 接続URLをクリップボードにコピー &nbsp;
                         </button>
                     </div>
                     <div class="mdl-cell mdl-cell--6-col">
-                        <h4>スマートフォンからの接続用</h4>
+                        <h6 class="qrcode-title">スマートフォンとの接続用QRコード</h6>
                         <div class="qrbase">
                             <div class="qrcode" id="qrcode">
                             </div>
                         </div>
                     </div>
                     <div class="mdl-cell mdl-cell--6-col">
-                        <h4>URLコピー用</h4>
+                        <h6 class="qrcode-title">URLコピー用のQRコード</h6>
                         <div class="qrbase">
                             <div class="qrcode" id="qrcode-copy">
                             </div>
@@ -50,19 +51,22 @@
                 </div>
                 <div id="setting-cell" class="mdl-grid mdl-cell mdl-cell--12-col mdl-card mdl-shadow--2dp">
                     <div class="mdl-cell mdl-cell--12-col">
-                        <h6 class="sbj-device-select-title">ビデオ通話に使用するデバイス</h6>
+                        <h6 class="sbj-device-select-title">パソコン側のビデオ通話に使用するデバイス</h6>
                     </div>
                     <div class="mdl-cell mdl-cell--6-col">
-                        <div class="sbj-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="camera-select-div">
+                        <div class="sbj-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select"
+                            id="camera-select-div">
                             <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="camera-select" />
                             <label class="mdl-textfield__label" for="camera-select" maxlength='40'>カメラ</label>
-                            <ul id="camera-list" class="mdl-menu mdl-menu--top-left mdl-js-menu mdl-js-ripple-effect" for="camera-select">
+                            <ul id="camera-list" class="mdl-menu mdl-menu--top-left mdl-js-menu mdl-js-ripple-effect"
+                                for="camera-select">
                                 <li class="mdl-menu__item"></li>
                             </ul>
                         </div>
                     </div>
                     <div class="mdl-cell mdl-cell--6-col">
-                        <div class="sbj-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select" id="mic-select-div">
+                        <div class="sbj-device-select mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-select"
+                            id="mic-select-div">
                             <input class="mdl-textfield__input" type="text" spellcheck="false" readonly id="mic-select" />
                             <label class="mdl-textfield__label" for="mic-select" maxlength='40'>マイク</label>
                             <ul id="mic-list" class="mdl-menu mdl-menu--top-left mdl-js-menu mdl-js-ripple-effect" for="mic-select">
@@ -73,8 +77,8 @@
                 </div>
             </div>
         </main>
-        <input id="select-video-device" type="text" hidden/>
-        <input id="select-audio-device" type="text" hidden/>
+        <input id="select-video-device" type="text" hidden />
+        <input id="select-audio-device" type="text" hidden />
     </div>
 
     <script src='../lib/react.min.js'></script>

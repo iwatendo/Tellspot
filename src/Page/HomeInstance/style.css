@@ -3,6 +3,11 @@
   margin: auto;
 }
 
+.title{
+  width: 100%;
+  text-align: center;
+}
+
 .qrbase {
   display: flex;
   padding: 0px;
@@ -14,6 +19,10 @@
 .qrcode {
   background-color: white;
   margin: 8px auto;
+}
+
+.qrcode-title{
+  text-align: center;
 }
 
 .livecast{
